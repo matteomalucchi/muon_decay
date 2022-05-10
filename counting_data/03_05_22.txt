@@ -1,0 +1,33 @@
+## numero di segnali (dividi sempre per 100)
+
+
+freq singola pmt1   12608
+
+coinc 12    1081
+freq 2  13169
+
+coinc 123    783
+freq 3      10719
+
+coinc 1234      632
+freq 4      1124261
+
+coinc 12345      465
+freq       8236
+
+coinc 123456      379
+freq 6      9695
+
+coinc 1234567      12
+freq 7      519
+
+coinc 23456     840
+atteso  3000*0.86*0.63*0.78*0.85*0.88=950
+
+------------
+1.5 in 100 s al cm ^2
+1.5*2000 = 3000
+
+------------
+
+

@@ -4,7 +4,7 @@ using namespace std;
 
 void create_prova(){
 
-    ofstream out_file("prova.dat");
+    ofstream out_file("prova2.dat");
     double numb = 100.;
     vector <double> t;
     //iota(begin(t), end(t), 0);
@@ -25,10 +25,10 @@ void create_prova(){
         out_file << 1 << setprecision(6) <<"          " << t[i]<<endl;
         cout << t[i] <<endl;
         if(i%10==0 && i%30!=0){
-            out_file << 2 << "          " << t[i]+r0->Exp(0.03) <<endl;
+            out_file << 2 << "          " << t[i]+r0->Exp(0.3) <<endl;
         }
         if(i%30==0){
-            out_file << 3 << "          " << t[i]+r0->Exp(0.03)<<endl;
+            out_file << 3 << "          " << t[i]+r0->Exp(0.3)<<endl;
         }
     }
 

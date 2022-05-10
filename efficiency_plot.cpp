@@ -78,7 +78,8 @@ void efficiency_plot(){
         line->SetLineStyle(9);
         gr->Draw("AP");
         line->Draw("same");
-        c->SaveAs(&("efficiency/"+pmt+"_efficiency.pdf")[0]);
+        c->SaveAs(&("efficiency/"+pmt+"_efficiency.png")[0]);
         c->Write();
     }
+    outfile->Close();
 }
