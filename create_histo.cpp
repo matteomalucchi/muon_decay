@@ -31,37 +31,54 @@ void fit_exp(TH1D* histo, vector<double>range, vector<double> exp_param){
     f->SetParameters(exp_param[0], exp_param[1]);
     histo->Fit("f");
     histo->Draw();
-    //c->SaveAs(&("exp/"+name+".png")[0]);
-    //histo->Write();
+    c->SaveAs(&("exp/"+name+".png")[0]);
+    histo->Write();
 }
     
 void create_histo(){
     // name of file | number of channels for the time difference | number of bin | range inf exp | range sup exp | norm exp | tau exp
     map <string, vector<double>> datasets ={
-                        {"4fe_above_up_run1", {500, 0, 10, 1000, 0.3, 1000, 0.3}},
-                        {"4fe_above_down_run1", {500, 0, 3, 1000, 0.3, 1000, 0.3}},
-                        {"4fe_above_up_run2", {500, 0, 10, 1000, 0.3, 1000, 0.3}},
-                        {"4fe_above_down_run2", {500, 0, 3, 1000, 0.3, 1000, 0.3}},
+                        {"4fe_above_up_run1", {500, 0, 1, 1000, 0.3, 1000, 0.3}},
+                        {"4fe_above_down_run1", {500, 0, 1, 1000, 0.3, 1000, 0.3}},
+                        {"4fe_above_up_run2", {500, 0, 1, 1000, 0.3, 1000, 0.3}},
+                        {"4fe_above_down_run2", {500, 0, 1, 1000, 0.3, 1000, 0.3}},
     };
     vector<TTree*> trees;  
-    vector<TH1D*> histos;
+    map <string, vector<TH1D*>>  histos_dict = {
+        {"fe", {}},
+        {"al", {}},
+    }
     TH1D* histo;
 
     TFile *tree_file= new TFile("tree.root", "READ");
-    //TFile *histo_file= new TFile("histo.root", "RECREATE");
+    TFile *histo_file= new TFile("histo.root", "RECREATE");
     for (const auto &dataset : datasets){
         const auto name = dataset.first;
         const auto ranges = {dataset.second[0], dataset.second[1], dataset.second[2]};
         const auto exp_param = {dataset.second[3], dataset.second[4], dataset.second[5], dataset.second[6]};
-
+        if (name.find("fe") != string::npos){
+            string material = "fe";
+        }
+        if (name.find("al") != string::npos){
+            string material = "al";
+        }
         histo = fill_histo(tree_file, name, ranges);  
 
-        for (int i=0; i<histos.size();i++){
+        for (int i=0; i<histos_dict.size();i++){
             fit_exp(histo, ranges, exp_param);
         }
-        histos.push_back(histo);
+        histos_dict[material].push_back(histo);
+    }
+    for (const auto &histo_material : histos_dict){
+        const auto material = histo_material.first;
+        const auto histos = histo_material.second;
+        if (histos.size()>0) TH1D *histo_tot = (TH1D*)histos[0]->Clone(&("histo_"+material)[0]);
+        for (int i=1; i < histos.size(); i++){
+            histo_tot->Add(histos[i]);
+            
+        }
     }
 
-    //histo_file->Close();
+    histo_file->Close();
     getchar();
 }
