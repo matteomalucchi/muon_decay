@@ -5,7 +5,6 @@
 
 using namespace std;
 
-
 TH1D* fill_histo(TFile* tree_file, string name, vector<double> ranges){
     double t;
     TTree* tree = (TTree*) tree_file->Get(&(name)[0]);
