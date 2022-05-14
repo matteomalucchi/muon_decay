@@ -20,11 +20,6 @@ vector<vector<double>> read_time(string name, int numb){
             else if (ch_numb==4) v4=number;
             else if (ch_numb >1 && ch_numb < 4){
                 w[ch_numb-2].push_back((number-v1)*pow(10, 6));
-
-                if (w[ch_numb-2][w[ch_numb-2].size()-1] >40 || w[ch_numb-2][w[ch_numb-2].size()-1] <0){
-                    cout <<w[ch_numb-2][w[ch_numb-2].size()-1]<<endl;
-                    cout << setprecision(12)<<v1 << endl;
-                }
             }
             if (numb==4){
                 if (ch_numb >4 && ch_numb < 7){
@@ -40,7 +35,7 @@ vector<vector<double>> read_time(string name, int numb){
 } 
 
 void create_ttree(vector<string> materials, string run, vector<vector<double>> diff_time){
-    vector<string> positions = {"_above_up","_above_down","_below_up","_below_down"};
+    vector<string> positions = {"_top_up","_top_down","_bottom_up","_bottom_down"};
     for (int i=0; i<diff_time.size(); i++){
         string name=materials[i]+positions[i]+run;
         TTree *data= new TTree(&(name)[0], &(name)[0]);
@@ -60,8 +55,9 @@ void create_ttree(vector<string> materials, string run, vector<vector<double>> d
 void main_func(){
 
     map <string, vector<string>> datasets ={
-                        {"4fe_run1", {"fe4", "fe4"}},
-                        {"4fe_run2", {"fe4", "fe4"}}
+                        {"fe4_run1", {"fe4", "fe4"}},
+                        {"fe4_run2", {"fe4", "fe4"}},
+                        {"fe4_al4_run3", {"fe4", "fe4", "al4", "al4"}}
 
     };
     vector<vector<double>> diff_time;  
