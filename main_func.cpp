@@ -1,8 +1,8 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-using namespace std;
 
+using namespace std;
 
 vector<vector<double>> read_time(string name, int numb){
     ifstream myfile;
@@ -25,7 +25,7 @@ vector<vector<double>> read_time(string name, int numb){
                 if (ch_numb >4 && ch_numb < 7){
                     w[ch_numb-3].push_back((number-v4)*pow(10, 6));
                     //cout <<w[ch_numb-3][w[ch_numb-3].size()-1]<<endl;
-                    //cout << setprecision(12)<<v[0][v[0].size()-1] << endl;
+                    //cout << setprecision(12)<<v4<< endl;
                 }
             }
         }
@@ -34,7 +34,10 @@ vector<vector<double>> read_time(string name, int numb){
     return w;
 } 
 
-void create_ttree(vector<string> materials, string run, vector<vector<double>> diff_time){
+void create_tree(vector<string> materials, string run, vector<vector<double>> diff_time){
+
+    // top/bottom refers to the upper or lower half of the telescope
+    // up/down refers to the pmt above or below the studied material
     vector<string> positions = {"_top_up","_top_down","_bottom_up","_bottom_down"};
     for (int i=0; i<diff_time.size(); i++){
         string name=materials[i]+positions[i]+run;
@@ -48,12 +51,10 @@ void create_ttree(vector<string> materials, string run, vector<vector<double>> d
         //data->Scan();
         data->Write();
     }
-    //return data;
 }
 
 
 void main_func(){
-
     map <string, vector<string>> datasets ={
                         {"fe4_run1", {"fe4", "fe4"}},
                         {"fe4_run2", {"fe4", "fe4"}},
@@ -73,11 +74,8 @@ void main_func(){
         string run = name.substr(name.find("_run"));
         cout << "Processing : " << name << endl;
         diff_time = read_time(name, numb);
-        create_ttree(materials, run, diff_time);
+        create_tree(materials, run, diff_time);
         cout << endl;
     }
-
-
-
     tree_file->Close();
 }
