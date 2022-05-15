@@ -7,8 +7,9 @@ using namespace std;
 vector<vector<double>> read_time(string name, int numb){
     ifstream myfile;
     myfile.open("data/"+name+".dat", ios::in | ios::out);  
-    double v1, v4;
+    vector<double> v1, v4;
     vector<vector<double>> w (numb);
+    vector<int> idxs;
 
     if (myfile.is_open()){
         string tp;
@@ -16,18 +17,32 @@ vector<vector<double>> read_time(string name, int numb){
         while(getline(myfile, tp)){ //read data from file object and put it into string.
             number = stod(tp.substr(2, tp.length()-2));
             int ch_numb = stoi(tp.substr(0));
-            if (ch_numb==1) v1=number;
-            else if (ch_numb==4) v4=number;
+            idxs.push_back(ch_numb);
+            if (ch_numb==1) v1.push_back(number);
+            else if (ch_numb==4) v4.push_back(number);
             else if (ch_numb >1 && ch_numb < 4){
-                w[ch_numb-2].push_back((number-v1)*pow(10, 6));
-            }
-            if (numb==4){
-                if (ch_numb >4 && ch_numb < 7){
-                    w[ch_numb-3].push_back((number-v4)*pow(10, 6));
-                    cout <<w[ch_numb-3][w[ch_numb-3].size()-1]<<endl;
-                    cout << setprecision(12)<<v4<< endl;
+                if (number != v1[v1.size()-1]){
+                    w[ch_numb-2].push_back((number-v1[v1.size()-1])*pow(10, 6));
+                }
+                else if (number-v1[v1.size()-1] <= 0 && idxs[idxs.size()-2]==1 && idxs[idxs.size()-3]==1) {
+                    w[ch_numb-2].push_back((number-v1[v1.size()-2])*pow(10, 6));
+                    if (number < v1[v1.size()-1]) cout << setprecision(12)<<  w[ch_numb-2][w[ch_numb-2].size()-1] <<endl;
+                    //cout << setprecision(12)<< v1[v1.size()-2] <<"      "<< v1[v1.size()-1] <<"      " <<number<<"      " <<  endl;
                 }
             }
+            if (numb==4){
+                if (ch_numb >4 && ch_numb <7){
+                    if (number != v4[v4.size()-1]){
+                        w[ch_numb-3].push_back((number-v4[v4.size()-1])*pow(10, 6));
+                    }
+                    else if (number-v4[v4.size()-1] <= 0 && idxs[idxs.size()-2]==4 && idxs[idxs.size()-3]==4) {
+                        w[ch_numb-3].push_back((number-v4[v4.size()-2])*pow(10, 6));
+                        if (number < v4[v4.size()-1]) cout << setprecision(12)<<  w[ch_numb-3][w[ch_numb-3].size()-1] <<endl;
+                        //cout << setprecision(12)<< v1[v1.size()-2] <<"      "<< v1[v1.size()-1] <<"      " <<number<<"      " <<  endl;
+                    }
+                }
+            }
+
         }
         myfile.close(); //close the file object.
     }    
@@ -66,7 +81,7 @@ void create_tree(){
         {"fe", {}},
         {"al", {}},
     };    
-    TFile *tree_file= new TFile(&("tree.root")[0], "RECREATE");
+    TFile *tree_file= new TFile(&("new_tree.root")[0], "RECREATE");
     for (const auto &dataset : datasets){
         const auto name = dataset.first;
         const auto materials = dataset.second;

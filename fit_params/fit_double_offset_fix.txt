@@ -3,236 +3,236 @@
 ####################### fe4_top_up_run1_double_offset_fix#######################
 
 ___________________ exp_long ___________________ 
-chi_square / ndof =    731.622/521
-norm_long =   1529.72 +- 82.7811
-tau_long =   0.0680752 +- 0.00172121
-offset_long =   1.74549 +- 0.0584695
+chi_square / ndof =    656.095/578
+norm_long (a.u.) =   4.01484 +- 3.3113
+tau_long (#mu s) =   1.13335 +- 0.601435
+offset_long (a.u.) =   2.02276 +- 0.0637249
 
 ___________________ exp_tot ___________________ 
-chi_square / ndof =    723.443/522
-norm_short =   -9.82443 +- 6.40966
-tau_short =   0.245599 +- 0.0799035
-norm_long =   1529.72 +- 0
-tau_long =   0.0680752 +- 0
-offset =   1.74549 +- 0
+chi_square / ndof =    1622.03/598
+norm_short (a.u.) =   1425.03 +- 76.6556
+tau_short (#mu s) =   0.0860368 +- 0.00252538
+norm_long (a.u.) =   4.01484 +- 0
+tau_long (#mu s) =   1.13335 +- 0
+offset (a.u.) =   2.02276 +- 0
 
 
 ####################### fe4_top_down_run1_double_offset_fix#######################
 
 ___________________ exp_long ___________________ 
-chi_square / ndof =    917.095/570
-norm_long =   86.621 +- 2.4349
-tau_long =   1.99579 +- 0.0502067
-offset_long =   2.29735 +- 0.0791936
+chi_square / ndof =    1041.84/578
+norm_long (a.u.) =   81.5268 +- 3.77519
+tau_long (#mu s) =   2.21943 +- 0.0746527
+offset_long (a.u.) =   2.96277 +- 0.0906288
 
 ___________________ exp_tot ___________________ 
-chi_square / ndof =    780.437/571
-norm_short =   395.305 +- 73.5859
-tau_short =   0.0727962 +- 0.00879239
-norm_long =   86.621 +- 0
-tau_long =   1.99579 +- 0
-offset =   2.29735 +- 0
+chi_square / ndof =    1165.34/598
+norm_short (a.u.) =   335.784 +- 53.799
+tau_short (#mu s) =   0.0909195 +- 0.0102326
+norm_long (a.u.) =   81.5268 +- 0
+tau_long (#mu s) =   2.21943 +- 0
+offset (a.u.) =   2.96277 +- 0
 
 
 ####################### fe4_top_up_run2_double_offset_fix#######################
 
 ___________________ exp_long ___________________ 
-chi_square / ndof =    56.4808/172
-norm_long =   22.7312 +- 4.93496
-tau_long =   0.204465 +- 0.0392254
-offset_long =   1.11351 +- 0.0832722
+chi_square / ndof =    152.081/578
+norm_long (a.u.) =   3.44837 +- 1.34203
+tau_long (#mu s) =   1.48543 +- 0.385131
+offset_long (a.u.) =   0.266099 +- 0.0244266
 
 ___________________ exp_tot ___________________ 
-chi_square / ndof =    56.463/173
-norm_short =   -16001.7 +- 1
-tau_short =   0.00544307 +- 94163.2
-norm_long =   22.7312 +- 0
-tau_long =   0.204465 +- 0
-offset =   1.11351 +- 0
+chi_square / ndof =    272.312/598
+norm_short (a.u.) =   60.9605 +- 14.6897
+tau_short (#mu s) =   0.0980508 +- 0.0137755
+norm_long (a.u.) =   3.44837 +- 0
+tau_long (#mu s) =   1.48543 +- 0
+offset (a.u.) =   0.266099 +- 0
 
 
 ####################### fe4_top_down_run2_double_offset_fix#######################
 
 ___________________ exp_long ___________________ 
-chi_square / ndof =    207.008/258
-norm_long =   133.953 +- 0.238361
-tau_long =   0.00350681 +- 0.00441294
-offset_long =   1.34863 +- 0.0718818
+chi_square / ndof =    246.529/578
+norm_long (a.u.) =   7.46135 +- 1.12473
+tau_long (#mu s) =   2.23518 +- 0.245712
+offset_long (a.u.) =   0.346386 +- 0.0305178
 
 ___________________ exp_tot ___________________ 
-chi_square / ndof =    107.829/259
-norm_short =   7.48425 +- 1.0999
-tau_short =   1.06884 +- 0.156175
-norm_long =   133.953 +- 0
-tau_long =   0.00350681 +- 0
-offset =   1.34863 +- 0
+chi_square / ndof =    267.883/598
+norm_short (a.u.) =   37.2135 +- 6.77814e+07
+tau_short (#mu s) =   0.00409987 +- 0.126286
+norm_long (a.u.) =   7.46135 +- 0
+tau_long (#mu s) =   2.23518 +- 0
+offset (a.u.) =   0.346386 +- 0
 
 
 ####################### fe4_top_up_run3_double_offset_fix#######################
 
 ___________________ exp_long ___________________ 
-chi_square / ndof =    59.458/229
-norm_long =   158.779 +- 20.4645
-tau_long =   0.0981021 +- 0.00739585
-offset_long =   1.1413 +- 0.071869
+chi_square / ndof =    188.626/578
+norm_long (a.u.) =   0.881411 +- 0.399607
+tau_long (#mu s) =   3.21238 +- 1.42818
+offset_long (a.u.) =   0.401782 +- 0.034371
 
 ___________________ exp_tot ___________________ 
-chi_square / ndof =    59.0227/230
-norm_short =   -1.04688 +- 2.49886
-tau_short =   0.383846 +- 0.555655
-norm_long =   158.779 +- 0
-tau_long =   0.0981021 +- 0
-offset =   1.1413 +- 0
+chi_square / ndof =    254.875/598
+norm_short (a.u.) =   174.181 +- 24.3303
+tau_short (#mu s) =   0.0998858 +- 0.00831212
+norm_long (a.u.) =   0.881411 +- 0
+tau_long (#mu s) =   3.21238 +- 0
+offset (a.u.) =   0.401782 +- 0
 
 
 ####################### fe4_top_down_run3_double_offset_fix#######################
 
 ___________________ exp_long ___________________ 
-chi_square / ndof =    182.625/354
-norm_long =   18.0734 +- 1.69359
-tau_long =   1.23126 +- 0.116321
-offset_long =   1.17898 +- 0.0695746
+chi_square / ndof =    604.491/578
+norm_long (a.u.) =   -153421 +- 0.0905214
+tau_long (#mu s) =   -2.10164e+06 +- 126732
+offset_long (a.u.) =   153423 +- 0.0905724
 
 ___________________ exp_tot ___________________ 
-chi_square / ndof =    178.843/355
-norm_short =   11.1792 +- 8.54222
-tau_short =   0.139483 +- 0.0849875
-norm_long =   18.0734 +- 0
-tau_long =   1.23126 +- 0
-offset =   1.17898 +- 0
+chi_square / ndof =    624.075/598
+norm_short (a.u.) =   19.318 +- 1.52795
+tau_short (#mu s) =   1.21911 +- 0.0859841
+norm_long (a.u.) =   -153421 +- 0
+tau_long (#mu s) =   -2.10164e+06 +- 0
+offset (a.u.) =   153423 +- 0
 
 
 ####################### al4_bottom_up_run3_double_offset_fix#######################
 
 ___________________ exp_long ___________________ 
-chi_square / ndof =    2674.51/390
-norm_long =   43.9773 +- 3.35534
-tau_long =   1.14894 +- 0.0870878
-offset_long =   1.35518 +- 0.0701541
+chi_square / ndof =    482.725/578
+norm_long (a.u.) =   24.8751 +- 2.07123
+tau_long (#mu s) =   2.14136 +- 0.123465
+offset_long (a.u.) =   0.804762 +- 0.0459083
 
 ___________________ exp_tot ___________________ 
-chi_square / ndof =    275.211/391
-norm_short =   33612.4 +- 2758.3
-tau_short =   0.0270988 +- 0.000709049
-norm_long =   43.9773 +- 0
-tau_long =   1.14894 +- 0
-offset =   1.35518 +- 0
+chi_square / ndof =    521.483/598
+norm_short (a.u.) =   27858.3 +- 2189.94
+tau_short (#mu s) =   0.0290954 +- 0.000763352
+norm_long (a.u.) =   24.8751 +- 0
+tau_long (#mu s) =   2.14136 +- 0
+offset (a.u.) =   0.804762 +- 0
 
 
 ####################### al4_bottom_down_run3_double_offset_fix#######################
 
 ___________________ exp_long ___________________ 
-chi_square / ndof =    813.611/586
-norm_long =   50.8887 +- 2.12314
-tau_long =   1.78965 +- 0.0726965
-offset_long =   2.97884 +- 0.0850547
+chi_square / ndof =    1119.87/578
+norm_long (a.u.) =   41.021 +- 2.99319
+tau_long (#mu s) =   2.17324 +- 0.121737
+offset_long (a.u.) =   3.9706 +- 0.100569
 
 ___________________ exp_tot ___________________ 
-chi_square / ndof =    784.991/587
-norm_short =   111.7 +- 49.01
-tau_short =   0.0766421 +- 0.0234995
-norm_long =   50.8887 +- 0
-tau_long =   1.78965 +- 0
-offset =   2.97884 +- 0
+chi_square / ndof =    1171.03/598
+norm_short (a.u.) =   57.8846 +- 15.5503
+tau_short (#mu s) =   0.213901 +- 0.061515
+norm_long (a.u.) =   41.021 +- 0
+tau_long (#mu s) =   2.17324 +- 0
+offset (a.u.) =   3.9706 +- 0
 
 
 ####################### al_down_double_offset_fix#######################
 
 ___________________ exp_long ___________________ 
-chi_square / ndof =    1627.22/586
-norm_long =   101.777 +- 3.00256
-tau_long =   1.78966 +- 0.0514043
-offset_long =   5.95768 +- 0.120286
+chi_square / ndof =    2598.78/578
+norm_long (a.u.) =   82.0429 +- 4.23326
+tau_long (#mu s) =   2.17324 +- 0.086086
+offset_long (a.u.) =   7.94118 +- 0.142227
 
 ___________________ exp_tot ___________________ 
-chi_square / ndof =    1569.98/587
-norm_short =   223.357 +- 69.3007
-tau_short =   0.0766541 +- 0.0166207
-norm_long =   101.777 +- 0
-tau_long =   1.78966 +- 0
-offset =   5.95768 +- 0
+chi_square / ndof =    2701.1/598
+norm_short (a.u.) =   115.764 +- 21.9942
+tau_short (#mu s) =   0.213918 +- 0.0435088
+norm_long (a.u.) =   82.0429 +- 0
+tau_long (#mu s) =   2.17324 +- 0
+offset (a.u.) =   7.94118 +- 0
 
 
 ####################### al_up_double_offset_fix#######################
 
 ___________________ exp_long ___________________ 
-chi_square / ndof =    5349.02/390
-norm_long =   87.9545 +- 4.74516
-tau_long =   1.14895 +- 0.0615806
-offset_long =   2.71033 +- 0.0992129
+chi_square / ndof =    1438.66/578
+norm_long (a.u.) =   49.7502 +- 2.92916
+tau_long (#mu s) =   2.14136 +- 0.0873026
+offset_long (a.u.) =   1.60953 +- 0.0649243
 
 ___________________ exp_tot ___________________ 
-chi_square / ndof =    550.421/391
-norm_short =   67229.3 +- 3901.29
-tau_short =   0.0270982 +- 0.000501386
-norm_long =   87.9545 +- 0
-tau_long =   1.14895 +- 0
-offset =   2.71033 +- 0
+chi_square / ndof =    1516.18/598
+norm_short (a.u.) =   55717.2 +- 3097.18
+tau_short (#mu s) =   0.0290953 +- 0.000539785
+norm_long (a.u.) =   49.7502 +- 0
+tau_long (#mu s) =   2.14136 +- 0
+offset (a.u.) =   1.60953 +- 0
 
 
 ####################### al_tot_double_offset_fix#######################
 
 ___________________ exp_long ___________________ 
-chi_square / ndof =    6822.45/589
-norm_long =   186.22 +- 4.54305
-tau_long =   1.64794 +- 0.0388013
-offset_long =   7.16164 +- 0.130718
+chi_square / ndof =    3108.08/578
+norm_long (a.u.) =   131.375 +- 5.15211
+tau_long (#mu s) =   2.16747 +- 0.0634405
+offset_long (a.u.) =   9.5443 +- 0.156432
 
 ___________________ exp_tot ___________________ 
-chi_square / ndof =    2039.87/590
-norm_short =   59134.7 +- 3546.83
-tau_short =   0.0286021 +- 0.000578111
-norm_long =   186.22 +- 0
-tau_long =   1.64794 +- 0
-offset =   7.16164 +- 0
+chi_square / ndof =    8295.39/598
+norm_short (a.u.) =   1563.45 +- 31.7176
+tau_short (#mu s) =   0.172835 +- 0.00472382
+norm_long (a.u.) =   131.375 +- 0
+tau_long (#mu s) =   2.16747 +- 0
+offset (a.u.) =   9.5443 +- 0
 
 
 ####################### fe_down_double_offset_fix#######################
 
 ___________________ exp_long ___________________ 
-chi_square / ndof =    1989.44/585
-norm_long =   197.903 +- 3.66022
-tau_long =   2.04674 +- 0.0339228
-offset_long =   4.93378 +- 0.114871
+chi_square / ndof =    2483.51/578
+norm_long (a.u.) =   185.28 +- 5.6818
+tau_long (#mu s) =   2.21208 +- 0.0490609
+offset_long (a.u.) =   6.86704 +- 0.13725
 
 ___________________ exp_tot ___________________ 
-chi_square / ndof =    1714.88/586
-norm_short =   760.498 +- 97.2414
-tau_short =   0.0773041 +- 0.00663216
-norm_long =   197.903 +- 0
-tau_long =   2.04674 +- 0
-offset =   4.93378 +- 0
+chi_square / ndof =    2704.24/598
+norm_short (a.u.) =   659.504 +- 72.4472
+tau_short (#mu s) =   0.0967054 +- 0.0076972
+norm_long (a.u.) =   185.28 +- 0
+tau_long (#mu s) =   2.21208 +- 0
+offset (a.u.) =   6.86704 +- 0
 
 
 ####################### fe_up_double_offset_fix#######################
 
 ___________________ exp_long ___________________ 
-chi_square / ndof =    1848.05/562
-norm_long =   3354.48 +- 119.091
-tau_long =   0.0684655 +- 0.00112256
-offset_long =   3.63308 +- 0.0811965
+chi_square / ndof =    1908.92/578
+norm_long (a.u.) =   10.3022 +- 3.62024
+tau_long (#mu s) =   1.52544 +- 0.411169
+offset_long (a.u.) =   4.72355 +- 0.102356
 
 ___________________ exp_tot ___________________ 
-chi_square / ndof =    1830.28/563
-norm_short =   -25.9524 +- 10.6024
-tau_short =   0.219132 +- 0.0399886
-norm_long =   3354.48 +- 0
-tau_long =   0.0684655 +- 0
-offset =   3.63308 +- 0
+chi_square / ndof =    4279.83/598
+norm_short (a.u.) =   3077.18 +- 111.595
+tau_short (#mu s) =   0.0873856 +- 0.00174754
+norm_long (a.u.) =   10.3022 +- 0
+tau_long (#mu s) =   1.52544 +- 0
+offset (a.u.) =   4.72355 +- 0
 
 
 ####################### fe_tot_double_offset_fix#######################
 
 ___________________ exp_long ___________________ 
-chi_square / ndof =    5508.86/593
-norm_long =   234.089 +- 4.53939
-tau_long =   1.91326 +- 0.0351915
-offset_long =   7.76436 +- 0.139719
+chi_square / ndof =    3978.02/578
+norm_long (a.u.) =   192.604 +- 6.19684
+tau_long (#mu s) =   2.20402 +- 0.0537237
+offset_long (a.u.) =   11.5659 +- 0.176667
 
 ___________________ exp_tot ___________________ 
-chi_square / ndof =    3418.62/594
-norm_short =   3411.26 +- 142.827
-tau_short =   0.0802145 +- 0.00208221
-norm_long =   234.089 +- 0
-tau_long =   1.91326 +- 0
-offset =   7.76436 +- 0
+chi_square / ndof =    4904.02/598
+norm_short (a.u.) =   3479.03 +- 130.493
+tau_short (#mu s) =   0.0942835 +- 0.00226418
+norm_long (a.u.) =   192.604 +- 0
+tau_long (#mu s) =   2.20402 +- 0
+offset (a.u.) =   11.5659 +- 0

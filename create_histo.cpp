@@ -18,7 +18,7 @@ TH1D* fill_histo(TFile* tree_file, string name, vector<double> ranges, string ty
         tree->GetEntry(i);
         if (t>ranges[6] && t<ranges[7]) histo->Fill(t);
     }
-    histo->GetXaxis()->SetTitle("time [#mu s]");
+    histo->GetXaxis()->SetTitle("time (#mu s)");
     histo->GetYaxis()->SetTitle(&("Entries / "+to_string(histo->GetBinWidth(1)))[0]);
     cout << "Filled histogram" <<endl;
     gStyle->SetOptStat("neou");
@@ -32,12 +32,12 @@ TH1D* fit_exp(TH1D* histo, vector<double> infos, string type, ofstream & fit_fil
     TF1 *exp_long, *exp_tot;
     if (type.find("offset") != string::npos) {
         exp_tot = new TF1("exp_tot", "[0]*exp(-x/[1])+[2]*exp(-x/[3])+[4]", infos[6], infos[7]);
-        exp_tot->SetParNames("norm_short", "tau_short", "norm_long", "tau_long", "offset"); 
+        exp_tot->SetParNames("norm_short (a.u.)", "tau_short (#mu s)", "norm_long (a.u.)", "tau_long (#mu s)", "offset (a.u.)"); 
         exp_tot->SetParameter(0, infos[0]);
         exp_tot->SetParameter(1, infos[1]);
         if (type.find("double") != string::npos){
             exp_long = new TF1("exp_long", "[0]*exp(-x/[1])+[2]", infos[8], infos[7]);
-            exp_long->SetParNames("norm_long", "tau_long", "offset_long"); 
+            exp_long->SetParNames("norm_long (a.u.)", "tau_long (#mu s)", "offset_long (a.u.)"); 
             exp_long->SetParameters(infos[2], infos[3], infos[4]);
             exp_long->SetLineColor(kGreen);
             histo->Fit("exp_long", &(option)[0]);
@@ -58,12 +58,12 @@ TH1D* fit_exp(TH1D* histo, vector<double> infos, string type, ofstream & fit_fil
     }
     else if (type.find("offset") == string::npos) {
         exp_tot = new TF1("exp_tot", "[0]*exp(-x/[1])+[2]*exp(-x/[3])", infos[6], infos[7]);
-        exp_tot->SetParNames("norm_short", "tau_short", "norm_long", "tau_long"); 
+        exp_tot->SetParNames("norm_short (a.u.)", "tau_short (#mu s)", "norm_long (a.u.)", "tau_long (#mu s)"); 
         exp_tot->SetParameter(0, infos[0]);
         exp_tot->SetParameter(1, infos[1]);
         if (type.find("double") != string::npos){
             exp_long = new TF1("exp_long", "[0]*exp(-x/[1])", infos[8], infos[7]);
-            exp_long->SetParNames("norm_long", "tau_long"); 
+            exp_long->SetParNames("norm_long (a.u.)", "tau_long (#mu s)"); 
             exp_long->SetParameters(infos[2], infos[3]);
             exp_long->SetLineColor(kGreen);
             histo->Fit("exp_long", &(option)[0]);
@@ -95,7 +95,7 @@ TH1D* fit_exp(TH1D* histo, vector<double> infos, string type, ofstream & fit_fil
     for (int i=0; i<exp_tot->GetNpar(); i++) {
         fit_file << exp_tot->GetParName(i) << " =   " <<  exp_tot->GetParameter(i) << " +- " << exp_tot->GetParError(i) <<endl;
     }
-    c->SaveAs(&("histos_images/"+name+".png")[0]);
+    c->SaveAs(&("histos_images/"+type+"/"+name+".png")[0]);
     //histo->Write();
     c->Write();
     return histo;
@@ -124,27 +124,27 @@ void create_histo(){
     */
     list <string> fit_types = {
                         "_double_offset",
-                        "_double_offset_fix",
-                        "_double",
-                        "_single_offset",
-                        "_single",  
+                        //"_double_offset_fix",
+                        //"_double",
+                        //"_single_offset",
+                        //"_single",  
                     };
 
     // name of the material |
     // norm exp_short | tau exp_short | norm exp_long | tau exp_long | offset exp |
     // number of bins | range inf histo | range sup histo | start exp_long
     map <string, vector<double>>  materials_dict = {
-        {"fe", {100, 0.2, 100, 2.2, 10,
-                     600, 0.05, 30, 1}},
-        {"al", {100, 0.88, 100, 2.2, 10,
-                     600, 0.05, 30, 1}},
+        {"fe", {100, 0.2, 200, 2.2, 10,
+                     400, 0.02, 30, 1}},
+        {"al", {100, 0.88, 200, 2.2, 10,
+                     400, 0.02, 30, 1}},
     };
     list <string> positions ={"up", "down"};  
 
     TH1D* histo;
     TH1D* histo_tot;
     TH1D* histo_pos;
-    TFile *tree_file= new TFile("tree.root", "READ");
+    TFile *tree_file= new TFile("new_tree.root", "READ");
 
     for(list<string>::const_iterator type = fit_types.begin(); type != fit_types.end(); ++type){
         cout << "\n################## Processing : " << *type <<" ##################" << endl;
@@ -172,13 +172,13 @@ void create_histo(){
 
             histo = fill_histo(tree_file, *name, materials_dict[material], *type);   
             gROOT->SetBatch(kTRUE);
-            histo = fit_exp(histo, materials_dict[material], *type, fit_file, "Q");
+            histo = fit_exp(histo, materials_dict[material], *type, fit_file, "Q L R");
             histos_material[material].push_back(histo);
         }
         for (const auto & h_m : histos_material){
             const auto material = h_m.first;
             const auto histos_m = h_m.second;
-            gROOT->SetBatch(kTRUE);
+            gROOT->SetBatch(kFALSE);
             if (histos_m.size()>0){
                 for (const auto & h_p : histos_pos){
                     const auto position = h_p.first;
@@ -194,7 +194,7 @@ void create_histo(){
                         }
                     }
                     histos_p->SetNameTitle(&(material+"_"+position+*type)[0], &(material+"_"+position+*type)[0]);
-                    histos_p = fit_exp(histos_p, materials_dict[material], *type, fit_file, "Q");      
+                    histos_p = fit_exp(histos_p, materials_dict[material], *type, fit_file, "L R");      
                     histos_pos[position]=histos_p;  
                 }
                 gROOT->SetBatch(kFALSE);
@@ -202,7 +202,7 @@ void create_histo(){
                 histo_tot = (TH1D*)histos_pos["up"]->Clone();
                 histo_tot->Add(histos_pos["down"]);
                 histo_tot->SetNameTitle(&(material+"_tot"+*type)[0], &(material+"_tot"+*type)[0]);
-                histo_tot = fit_exp(histo_tot, materials_dict[material], *type, fit_file, "");        
+                histo_tot = fit_exp(histo_tot, materials_dict[material], *type, fit_file, "Q L R");        
             }
 
         }
