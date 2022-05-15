@@ -24,7 +24,7 @@ TH1D* fill_histo(TFile* tree_file, string name, vector<double> ranges, string ty
     return histo;
 }
 
-TH1D* fit_exp(TH1D* histo, vector<double> infos, string type, ofstream & fit_file){
+TH1D* fit_exp(TH1D* histo, vector<double> infos, string type, ofstream & fit_file, string option){
     string name = histo->GetName();
     fit_file << "\n\n####################### " << name << "#######################" << endl;
     TCanvas *c = new TCanvas(&(name)[0], &(name)[0]);
@@ -39,7 +39,7 @@ TH1D* fit_exp(TH1D* histo, vector<double> infos, string type, ofstream & fit_fil
             exp_long->SetParNames("norm_long", "tau_long", "offset_long"); 
             exp_long->SetParameters(infos[2], infos[3], infos[4]);
             exp_long->SetLineColor(kGreen);
-            histo->Fit("exp_long");
+            histo->Fit("exp_long", &(option)[0]);
             exp_tot->FixParameter(2, exp_long->GetParameter(0));
             exp_tot->FixParameter(3, exp_long->GetParameter(1));
             if (type.find("fix") != string::npos) {
@@ -65,7 +65,7 @@ TH1D* fit_exp(TH1D* histo, vector<double> infos, string type, ofstream & fit_fil
             exp_long->SetParNames("norm_long", "tau_long"); 
             exp_long->SetParameters(infos[2], infos[3]);
             exp_long->SetLineColor(kGreen);
-            histo->Fit("exp_long");
+            histo->Fit("exp_long", &(option)[0]);
             exp_tot->FixParameter(2, exp_long->GetParameter(0));
             exp_tot->FixParameter(3, exp_long->GetParameter(1));
         }
@@ -75,7 +75,7 @@ TH1D* fit_exp(TH1D* histo, vector<double> infos, string type, ofstream & fit_fil
         }
     }
 
-    histo->Fit("exp_tot");
+    histo->Fit("exp_tot", &(option)[0]);
 
     histo->Draw();
     exp_tot->Draw("same");
@@ -94,7 +94,7 @@ TH1D* fit_exp(TH1D* histo, vector<double> infos, string type, ofstream & fit_fil
     for (int i=0; i<exp_tot->GetNpar(); i++) {
         fit_file << exp_tot->GetParName(i) << " =   " <<  exp_tot->GetParameter(i) << " +- " << exp_tot->GetParError(i) <<endl;
     }
-    c->SaveAs(&("histos_images/"+name+type+".png")[0]);
+    c->SaveAs(&("histos_images/"+name+".png")[0]);
     //histo->Write();
     c->Write();
     return histo;
@@ -171,12 +171,14 @@ void create_histo(){
             }
 
             histo = fill_histo(tree_file, *name, materials_dict[material], *type);   
-            histo = fit_exp(histo, materials_dict[material], *type, fit_file);
+            gROOT->SetBatch(kTRUE);
+            histo = fit_exp(histo, materials_dict[material], *type, fit_file, "Q");
             histos_material[material].push_back(histo);
         }
         for (const auto & h_m : histos_material){
             const auto material = h_m.first;
             const auto histos_m = h_m.second;
+            gROOT->SetBatch(kTRUE);
             if (histos_m.size()>0){
                 for (const auto & h_p : histos_pos){
                     const auto position = h_p.first;
@@ -192,15 +194,15 @@ void create_histo(){
                         }
                     }
                     histos_p->SetNameTitle(&(material+"_"+position+*type)[0], &(material+"_"+position+*type)[0]);
-                    histos_p = fit_exp(histos_p, materials_dict[material], *type, fit_file);      
+                    histos_p = fit_exp(histos_p, materials_dict[material], *type, fit_file, "Q");      
                     histos_pos[position]=histos_p;  
                 }
-            
+                gROOT->SetBatch(kFALSE);
                 cout << "\n Processing : " << material << "_tot" << endl;                    
                 histo_tot = (TH1D*)histos_pos["up"]->Clone();
                 histo_tot->Add(histos_pos["down"]);
                 histo_tot->SetNameTitle(&(material+"_tot"+*type)[0], &(material+"_tot"+*type)[0]);
-                histo_tot = fit_exp(histo_tot, materials_dict[material], *type, fit_file);        
+                histo_tot = fit_exp(histo_tot, materials_dict[material], *type, fit_file, "");        
             }
 
         }
