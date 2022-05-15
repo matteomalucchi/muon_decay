@@ -24,8 +24,8 @@ vector<vector<double>> read_time(string name, int numb){
             if (numb==4){
                 if (ch_numb >4 && ch_numb < 7){
                     w[ch_numb-3].push_back((number-v4)*pow(10, 6));
-                    //cout <<w[ch_numb-3][w[ch_numb-3].size()-1]<<endl;
-                    //cout << setprecision(12)<<v4<< endl;
+                    cout <<w[ch_numb-3][w[ch_numb-3].size()-1]<<endl;
+                    cout << setprecision(12)<<v4<< endl;
                 }
             }
         }
@@ -54,7 +54,7 @@ void create_tree(vector<string> materials, string run, vector<vector<double>> di
 }
 
 
-void main_func(){
+void create_tree(){
     map <string, vector<string>> datasets ={
                         {"fe4_run1", {"fe4", "fe4"}},
                         {"fe4_run2", {"fe4", "fe4"}},

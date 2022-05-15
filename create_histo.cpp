@@ -16,11 +16,12 @@ TH1D* fill_histo(TFile* tree_file, string name, vector<double> ranges, string ty
     tree->SetBranchAddress("t",&t);
     for (Int_t i=0; i<nentries; i++) {
         tree->GetEntry(i);
-        if (t<35 && t>0) histo->Fill(t);
+        if (t>ranges[6] && t<ranges[7]) histo->Fill(t);
     }
     histo->GetXaxis()->SetTitle("time [#mu s]");
     histo->GetYaxis()->SetTitle(&("Entries / "+to_string(histo->GetBinWidth(1)))[0]);
     cout << "Filled histogram" <<endl;
+    gStyle->SetOptStat("neou");
     return histo;
 }
 
@@ -78,8 +79,7 @@ TH1D* fit_exp(TH1D* histo, vector<double> infos, string type, ofstream & fit_fil
     histo->Fit("exp_tot", &(option)[0]);
 
     histo->Draw();
-    exp_tot->Draw("same");
-
+    gStyle->SetOptFit(1111);
     if (type.find("double") != string::npos){
         exp_long->Draw("same");
         fit_file << "\n___________________ exp_long ___________________ " <<endl;
@@ -88,6 +88,7 @@ TH1D* fit_exp(TH1D* histo, vector<double> infos, string type, ofstream & fit_fil
             fit_file << exp_long->GetParName(i) << " =   " <<  exp_long->GetParameter(i) << " +- " << exp_long->GetParError(i) <<endl;
         }
     }
+    exp_tot->Draw("same");
 
     fit_file << "\n___________________ exp_tot ___________________ " <<endl;
     fit_file << "chi_square / ndof =    " << exp_tot->GetChisquare() << "/" << exp_tot->GetNDF() <<endl;
@@ -134,13 +135,12 @@ void create_histo(){
     // number of bins | range inf histo | range sup histo | start exp_long
     map <string, vector<double>>  materials_dict = {
         {"fe", {100, 0.2, 100, 2.2, 10,
-                     100, 0, 30, 0.4}},
+                     600, 0.05, 30, 1}},
         {"al", {100, 0.88, 100, 2.2, 10,
-                     100, 0, 30, 0.2}},
+                     600, 0.05, 30, 1}},
     };
     list <string> positions ={"up", "down"};  
-    map <string, vector<TH1D*>>  histos_material;
-    map <string, TH1D*>  histos_pos;
+
     TH1D* histo;
     TH1D* histo_tot;
     TH1D* histo_pos;
@@ -151,11 +151,11 @@ void create_histo(){
         int q=0;
         ofstream fit_file("fit_params/fit"+*type+".txt");
         TFile *histo_file= new TFile(&("histos_files/histo"+*type+".root")[0], "RECREATE");
-        histos_material = {
+        map <string, vector<TH1D*>> histos_material = {
                 {"fe", {}},
                 {"al", {}},
         };
-        histos_pos = {
+        map <string, TH1D*> histos_pos = {
                 {"up", nullptr},
                 {"down", nullptr},
         };
