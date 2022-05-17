@@ -16,7 +16,7 @@ TH1D* fill_histo(TFile* tree_file, string name, vector<double> ranges, string ty
     tree->SetBranchAddress("t",&t);
     for (Int_t i=0; i<nentries; i++) {
         tree->GetEntry(i);
-        if (t>ranges[6] && t<ranges[7]) histo->Fill(t);
+        histo->Fill(t);
     }
     histo->GetXaxis()->SetTitle("time (#mu s)");
     histo->GetYaxis()->SetTitle(&("Entries / "+to_string(histo->GetBinWidth(1)))[0]);
@@ -114,6 +114,10 @@ void create_histo(){
                         "fe4_top_down_run3",
                         "al4_bottom_up_run3",
                         "al4_bottom_down_run3",
+                        "fe4_top_up_run4",
+                        "fe4_top_down_run4",
+                        "al4_bottom_up_run4",
+                        "al4_bottom_down_run4",
                     };
     vector<TTree*> trees;  
 
@@ -123,10 +127,10 @@ void create_histo(){
     * fix - if the offset of the second exp_tot is fixed to the value found in the first exp_long fit
     */
     list <string> fit_types = {
-                        "_double_offset",
-                        //"_double_offset_fix",
+                        //"_double_offset",
+                        "_double_offset_fix",
                         //"_double",
-                        //"_single_offset",
+                        "_single_offset",
                         //"_single",  
                     };
 
@@ -135,9 +139,9 @@ void create_histo(){
     // number of bins | range inf histo | range sup histo | start exp_long
     map <string, vector<double>>  materials_dict = {
         {"fe", {100, 0.2, 200, 2.2, 10,
-                     400, 0.02, 30, 1}},
+                     300, 0.15, 30, 1}},
         {"al", {100, 0.88, 200, 2.2, 10,
-                     400, 0.02, 30, 1}},
+                     300, 0.4, 30, 5}},
     };
     list <string> positions ={"up", "down"};  
 
@@ -197,7 +201,7 @@ void create_histo(){
                     histos_p = fit_exp(histos_p, materials_dict[material], *type, fit_file, "L R");      
                     histos_pos[position]=histos_p;  
                 }
-                gROOT->SetBatch(kFALSE);
+                gROOT->SetBatch(kTRUE);
                 cout << "\n Processing : " << material << "_tot" << endl;                    
                 histo_tot = (TH1D*)histos_pos["up"]->Clone();
                 histo_tot->Add(histos_pos["down"]);

@@ -4,12 +4,16 @@
 
 using namespace std;
 
+// eventi 1122
+// eventi in cui avviene 112 con 1 e 2 molto vicini
+
+
 vector<vector<double>> read_time(string name, int numb){
     ifstream myfile;
     myfile.open("data/"+name+".dat", ios::in | ios::out);  
     vector<double> v1, v4;
     vector<vector<double>> w (numb);
-    vector<int> idxs;
+    vector<int> idx;
 
     if (myfile.is_open()){
         string tp;
@@ -17,28 +21,32 @@ vector<vector<double>> read_time(string name, int numb){
         while(getline(myfile, tp)){ //read data from file object and put it into string.
             number = stod(tp.substr(2, tp.length()-2));
             int ch_numb = stoi(tp.substr(0));
-            idxs.push_back(ch_numb);
+            idx.push_back(ch_numb);
             if (ch_numb==1) v1.push_back(number);
             else if (ch_numb==4) v4.push_back(number);
-            else if (ch_numb >1 && ch_numb < 4){
-                if (number != v1[v1.size()-1]){
+            else if (ch_numb ==2 || ch_numb ==3){
+                if (number > v1[v1.size()-1]){
                     w[ch_numb-2].push_back((number-v1[v1.size()-1])*pow(10, 6));
                 }
-                else if (number-v1[v1.size()-1] <= 0 && idxs[idxs.size()-2]==1 && idxs[idxs.size()-3]==1) {
+                else if (number-v1[v1.size()-1] == 0 && idx[idx.size()-2]==1 && idx[idx.size()-3]==1) {
                     w[ch_numb-2].push_back((number-v1[v1.size()-2])*pow(10, 6));
-                    if (number < v1[v1.size()-1]) cout << setprecision(12)<<  w[ch_numb-2][w[ch_numb-2].size()-1] <<endl;
-                    //cout << setprecision(12)<< v1[v1.size()-2] <<"      "<< v1[v1.size()-1] <<"      " <<number<<"      " <<  endl;
+                    if (number < v1[v1.size()-1]){
+                        //cout << setprecision(12)<<  w[ch_numb-2][w[ch_numb-2].size()-1] <<endl;
+                        //cout << setprecision(12)<< v1[v1.size()-2] <<"      "<< v1[v1.size()-1] <<"      " <<number<<"      " <<  endl;
+                    }
                 }
             }
             if (numb==4){
-                if (ch_numb >4 && ch_numb <7){
-                    if (number != v4[v4.size()-1]){
+                if (ch_numb ==5 || ch_numb ==6){
+                    if (number > v4[v4.size()-1]){
                         w[ch_numb-3].push_back((number-v4[v4.size()-1])*pow(10, 6));
                     }
-                    else if (number-v4[v4.size()-1] <= 0 && idxs[idxs.size()-2]==4 && idxs[idxs.size()-3]==4) {
+                    else if (number-v4[v4.size()-1] == 0 && idx[idx.size()-2]==4 && idx[idx.size()-3]==4) {
                         w[ch_numb-3].push_back((number-v4[v4.size()-2])*pow(10, 6));
-                        if (number < v4[v4.size()-1]) cout << setprecision(12)<<  w[ch_numb-3][w[ch_numb-3].size()-1] <<endl;
-                        //cout << setprecision(12)<< v1[v1.size()-2] <<"      "<< v1[v1.size()-1] <<"      " <<number<<"      " <<  endl;
+                        if (number < v4[v4.size()-1]){
+                            //cout << setprecision(12)<<  w[ch_numb-3][w[ch_numb-3].size()-1] <<endl;
+                            //cout << setprecision(12)<< v1[v1.size()-2] <<"      "<< v1[v1.size()-1] <<"      " <<number<<"      " <<  endl;
+                        }
                     }
                 }
             }
@@ -73,7 +81,8 @@ void create_tree(){
     map <string, vector<string>> datasets ={
                         {"fe4_run1", {"fe4", "fe4"}},
                         {"fe4_run2", {"fe4", "fe4"}},
-                        {"fe4_al4_run3", {"fe4", "fe4", "al4", "al4"}}
+                        {"fe4_al4_run3", {"fe4", "fe4", "al4", "al4"}},
+                        {"fe4_al4_run4", {"fe4", "fe4", "al4", "al4"}},
 
     };
     vector<vector<double>> diff_time;  
