@@ -118,8 +118,8 @@ void create_histo(){
                         "fe4_top_down_run4",
                         "pbal4_bottom_up_run4",
                         "pbal4_bottom_down_run4",
-                        "nacl_top_up_run5",
-                        "nacl_top_down_run5",
+                        //"nacl_top_up_run5",
+                        //"nacl_top_down_run5",
                         "mag_bottom_up_run5",
                         "mag_bottom_down_run5",
                         "nacl_top_up_run6",
@@ -152,7 +152,13 @@ void create_histo(){
     map <string, vector<double>>  materials_dict = {
         {"fe", {100, 0.2, 200, 2.2, 10,
                      1500, 0, 30, 1}},
+        {"pbal", {100, 0.88, 200, 2.2, 10,
+                     1500, 0, 30, 5}},
         {"al", {100, 0.88, 200, 2.2, 10,
+                     1500, 0, 30, 5}},
+        {"nacl", {100, 0.88, 200, 2.2, 10,
+                     1500, 0, 30, 5}},
+        {"mag", {100, 0.88, 200, 2.2, 10,
                      1500, 0, 30, 5}},
     };
     list <string> positions ={"up", "down"};  
