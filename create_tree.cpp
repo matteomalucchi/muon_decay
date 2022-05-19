@@ -25,15 +25,15 @@ vector<vector<double>> read_time(string name, int numb){
             if (ch_numb==1) v1.push_back(number);
             else if (ch_numb==4) v4.push_back(number);
             else if (ch_numb ==2 || ch_numb ==3){
+                    if ((number-v1[v1.size()-2])*pow(10, 6) >3000000){
+                        //cout << setprecision(12)<<  w[ch_numb-2][w[ch_numb-2].size()-1] <<endl;
+                        //cout << setprecision(12)<< v1[v1.size()-2] <<"      "<< v1[v1.size()-1] <<"      " <<number<<"      " <<  endl;
+                    }
                 if (number > v1[v1.size()-1]){
                     w[ch_numb-2].push_back((number-v1[v1.size()-1])*pow(10, 6));
                 }
                 else if (number-v1[v1.size()-1] == 0 && idx[idx.size()-2]==1 && idx[idx.size()-3]==1) {
                     w[ch_numb-2].push_back((number-v1[v1.size()-2])*pow(10, 6));
-                    if (number < v1[v1.size()-1]){
-                        //cout << setprecision(12)<<  w[ch_numb-2][w[ch_numb-2].size()-1] <<endl;
-                        //cout << setprecision(12)<< v1[v1.size()-2] <<"      "<< v1[v1.size()-1] <<"      " <<number<<"      " <<  endl;
-                    }
                 }
             }
             if (numb==4){
@@ -81,15 +81,21 @@ void create_tree(){
     map <string, vector<string>> datasets ={
                         {"fe4_run1", {"fe4", "fe4"}},
                         {"fe4_run2", {"fe4", "fe4"}},
-                        {"fe4_al4_run3", {"fe4", "fe4", "al4", "al4"}},
-                        {"fe4_al4_run4", {"fe4", "fe4", "al4", "al4"}},
-
+                        {"fe4_pbal4_run3", {"fe4", "fe4", "pbal4", "pbal4"}},
+                        {"fe4_pbal4_run4", {"fe4", "fe4", "pbal4", "pbal4"}},
+                        {"nacl_mag_run5", {"nacl", "nacl", "mag", "mag"}},
+                        {"nacl_mag_run6", {"nacl", "nacl", "mag", "mag"}},
+                        {"fe2_al2_run7", {"fe2", "fe2", "al2", "al2"}},
+                    
     };
     vector<vector<double>> diff_time;  
     map <string, vector<TTree*>>  tree_map = {
         {"fe", {}},
+        {"pbal", {}},
         {"al", {}},
-    };    
+        {"nacl", {}},
+        {"mag", {}},
+    };  
     TFile *tree_file= new TFile(&("new_tree.root")[0], "RECREATE");
     for (const auto &dataset : datasets){
         const auto name = dataset.first;

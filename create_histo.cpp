@@ -21,11 +21,11 @@ TH1D* fill_histo(TFile* tree_file, string name, vector<double> ranges, string ty
     histo->GetXaxis()->SetTitle("time (#mu s)");
     histo->GetYaxis()->SetTitle(&("Entries / "+to_string(histo->GetBinWidth(1)))[0]);
     cout << "Filled histogram" <<endl;
-    gStyle->SetOptStat("neou");
     return histo;
 }
 
 TH1D* fit_exp(TH1D* histo, vector<double> infos, string type, ofstream & fit_file, string option){
+    gStyle->SetOptStat("neou");
     string name = histo->GetName();
     fit_file << "\n\n####################### " << name << "#######################" << endl;
     TCanvas *c = new TCanvas(&(name)[0], &(name)[0]);
@@ -112,13 +112,25 @@ void create_histo(){
                         "fe4_top_down_run2",
                         "fe4_top_up_run3",
                         "fe4_top_down_run3",
-                        "al4_bottom_up_run3",
-                        "al4_bottom_down_run3",
+                        "pbal4_bottom_up_run3",
+                        "pbal4_bottom_down_run3",
                         "fe4_top_up_run4",
                         "fe4_top_down_run4",
-                        "al4_bottom_up_run4",
-                        "al4_bottom_down_run4",
-                    };
+                        "pbal4_bottom_up_run4",
+                        "pbal4_bottom_down_run4",
+                        "nacl_top_up_run5",
+                        "nacl_top_down_run5",
+                        "mag_bottom_up_run5",
+                        "mag_bottom_down_run5",
+                        "nacl_top_up_run6",
+                        "nacl_top_down_run6",
+                        "mag_bottom_up_run6",
+                        "mag_bottom_down_run6",
+                        "fe2_top_up_run7",
+                        "fe2_top_down_run7",
+                        "al2_bottom_up_run7",
+                        "al2_bottom_down_run7",
+                        };
     vector<TTree*> trees;  
 
     /* fit_types:
@@ -139,9 +151,9 @@ void create_histo(){
     // number of bins | range inf histo | range sup histo | start exp_long
     map <string, vector<double>>  materials_dict = {
         {"fe", {100, 0.2, 200, 2.2, 10,
-                     300, 0.15, 30, 1}},
+                     1500, 0, 30, 1}},
         {"al", {100, 0.88, 200, 2.2, 10,
-                     300, 0.4, 30, 5}},
+                     1500, 0, 30, 5}},
     };
     list <string> positions ={"up", "down"};  
 
@@ -157,7 +169,10 @@ void create_histo(){
         TFile *histo_file= new TFile(&("histos_files/histo"+*type+".root")[0], "RECREATE");
         map <string, vector<TH1D*>> histos_material = {
                 {"fe", {}},
+                {"pbal", {}},
                 {"al", {}},
+                {"nacl", {}},
+                {"mag", {}},
         };
         map <string, TH1D*> histos_pos = {
                 {"up", nullptr},
