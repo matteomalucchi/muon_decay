@@ -10,7 +10,7 @@ using namespace std;
 
 vector<vector<double>> read_time(string name, int numb){
     ifstream myfile;
-    myfile.open("data/"+name+".dat", ios::in | ios::out);  
+    myfile.open("data/"+name+".dat", ios::in | ios::out);
     vector<double> v1, v4;
     vector<vector<double>> w (numb);
     vector<int> idx;
@@ -33,7 +33,7 @@ vector<vector<double>> read_time(string name, int numb){
                     w[ch_numb-2].push_back((number-v1[v1.size()-1])*pow(10, 6));
                 }
                 else if (number-v1[v1.size()-1] == 0 && idx[idx.size()-2]==1 && idx[idx.size()-3]==1) {
-                    w[ch_numb-2].push_back((number-v1[v1.size()-2])*pow(10, 6));
+                    //w[ch_numb-2].push_back((number-v1[v1.size()-2])*pow(10, 6));
                 }
             }
             if (numb==4){
@@ -42,7 +42,7 @@ vector<vector<double>> read_time(string name, int numb){
                         w[ch_numb-3].push_back((number-v4[v4.size()-1])*pow(10, 6));
                     }
                     else if (number-v4[v4.size()-1] == 0 && idx[idx.size()-2]==4 && idx[idx.size()-3]==4) {
-                        w[ch_numb-3].push_back((number-v4[v4.size()-2])*pow(10, 6));
+                        //w[ch_numb-3].push_back((number-v4[v4.size()-2])*pow(10, 6));
                         if (number < v4[v4.size()-1]){
                             //cout << setprecision(12)<<  w[ch_numb-3][w[ch_numb-3].size()-1] <<endl;
                             //cout << setprecision(12)<< v1[v1.size()-2] <<"      "<< v1[v1.size()-1] <<"      " <<number<<"      " <<  endl;
@@ -53,9 +53,9 @@ vector<vector<double>> read_time(string name, int numb){
 
         }
         myfile.close(); //close the file object.
-    }    
+    }
     return w;
-} 
+}
 
 void create_tree(vector<string> materials, string run, vector<vector<double>> diff_time){
 
@@ -86,17 +86,18 @@ void create_tree(){
                         {"nacl_mag_run5", {"nacl", "nacl", "mag", "mag"}},
                         {"nacl_mag_run6", {"nacl", "nacl", "mag", "mag"}},
                         {"fe2_al2_run7", {"fe2", "fe2", "al2", "al2"}},
-                    
+                        {"nacl_mag_run8", {"nacl", "nacl", "mag", "mag"}},
+
     };
-    vector<vector<double>> diff_time;  
+    vector<vector<double>> diff_time;
     map <string, vector<TTree*>>  tree_map = {
         {"fe", {}},
         {"pbal", {}},
         {"al", {}},
         {"nacl", {}},
         {"mag", {}},
-    };  
-    TFile *tree_file= new TFile(&("new_tree.root")[0], "RECREATE");
+    };
+    TFile *tree_file= new TFile(&("tree.root")[0], "RECREATE");
     for (const auto &dataset : datasets){
         const auto name = dataset.first;
         const auto materials = dataset.second;
