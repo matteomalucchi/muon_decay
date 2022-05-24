@@ -87,6 +87,7 @@ void create_tree(){
                         {"nacl_mag_run6", {"nacl", "nacl", "mag", "mag"}},
                         {"fe2_al2_run7", {"fe2", "fe2", "al2", "al2"}},
                         {"nacl_mag_run8", {"nacl", "nacl", "mag", "mag"}},
+                        {"nacl_mag_run9", {"nacl", "nacl", "mag", "mag"}},
 
     };
     vector<vector<double>> diff_time;

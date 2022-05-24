@@ -86,7 +86,7 @@ TH1D* fit_exp(TH1D* histo, vector<double> infos, string type, ofstream & fit_fil
 
     histo->Fit("exp_tot", &(option)[0]);
 
-    histo->Draw();
+    histo->Draw("L P");
     if (type.find("double") != string::npos){
         exp_long->Draw("same");
         fit_file << "\n___________________ exp_long ___________________ " <<endl;
@@ -125,22 +125,26 @@ void create_histo(){
                         "fe4_top_down_run4",
                         "pb4_bottom_up_run4",
                         "pb4_bottom_down_run4",
-                        /*"nacl_top_up_run5",
+                        "nacl_top_up_run5",
                         "nacl_top_down_run5",
                         "mag_bottom_up_run5",
                         "mag_bottom_down_run5",
                         "nacl_top_up_run6",
                         "nacl_top_down_run6",
                         "mag_bottom_up_run6",
-                        "mag_bottom_down_run6",*/
+                        "mag_bottom_down_run6",
                         "fe2_top_up_run7",
                         "fe2_top_down_run7",
                         "al2_bottom_up_run7",
                         "al2_bottom_down_run7",
-                        /*"nacl_top_up_run8",
+                        "nacl_top_up_run8",
                         "nacl_top_down_run8",
                         "mag_bottom_up_run8",
-                        "mag_bottom_down_run8",*/
+                        "mag_bottom_down_run8",
+                        "nacl_top_up_run9",
+                        "nacl_top_down_run9",
+                        "mag_bottom_up_run9",
+                        "mag_bottom_down_run9",
                         };
 
     vector<TTree*> trees;
@@ -169,32 +173,34 @@ void create_histo(){
     map <string, vector<double>>  materials_dict_pos = {
         {"fe", {norm_pos/1.8, 0.201, norm_pos, 2.197, 10,
                      n_bin, 0.15, sup, 2}},
-        /*{"pb", {100, 0.88, 200, 2.2, 10,
-                     n_bin, inf, sup, 5}},*/
+        {"pb", {100, 0.88, 200, 2.2, 10,
+                     n_bin, inf, sup, 5}},
         {"al", {norm_pos/1.8, 0.88, norm_pos, 2.197, 10,
                      n_bin, 0.6, sup, 4}},
-        /*{"nacl", {100, 0.88, 200, 2.2, 10,
+        {"nacl", {100, 0.88, 200, 2.2, 10,
                      n_bin, inf, sup, 5}},
         {"mag", {100, 0.88, 200, 2.2, 10,
-                     n_bin, inf, sup, 5}},*/
+                     n_bin, inf, sup, 5}},
     };
 
     map <string, vector<double>>  materials_dict_tot = {
         {"fe", {norm_pos/1.8, 0.201, norm_pos, 2.197, 10,
                      n_bin, 0.15, sup, 2}},
-        /*{"pb", {100, 0.88, 200, 2.2, 10,
-                     n_bin, inf, sup, 5}},*/
+        {"pb", {100, 0.88, 200, 2.2, 10,
+                     n_bin, inf, sup, 5}},
         {"al", {norm_pos/1.8, 0.88, norm_pos, 2.197, 10,
                      n_bin, 0.6, sup, 4}},
-        /*{"nacl", {100, 0.88, 200, 2.2, 10,
+        {"nacl", {100, 0.88, 200, 2.2, 10,
                      n_bin, inf, sup, 5}},
         {"mag", {100, 0.88, 200, 2.2, 10,
-                     n_bin, inf, sup, 5}},*/
+                     n_bin, inf, sup, 5}},
     };
 
     TH1D* histo;
     TH1D* histo_tot;
     TH1D* histo_pos;
+    TH1D* histo_sub;
+
     TFile *tree_file= new TFile("new_tree.root", "READ");
 
     for(list<string>::const_iterator type = fit_types.begin(); type != fit_types.end(); ++type){
@@ -204,10 +210,10 @@ void create_histo(){
         TFile *histo_file= new TFile(&("histos_files/histo"+*type+".root")[0], "RECREATE");
         map <string, vector<TH1D*>> histos_material = {
             {"fe", {}},
-            //{"pb", {}},
+            {"pb", {}},
             {"al", {}},
-            //{"nacl", {}},
-            //{"mag", {}},
+            {"nacl", {}},
+            {"mag", {}},
         };
         map <string, TH1D*> histos_pos = {
             {"up", nullptr},
@@ -226,7 +232,7 @@ void create_histo(){
             if (material != ""){
                 histo = fill_histo(tree_file, *name, materials_dict_pos[material], *type);
                 gROOT->SetBatch(kTRUE);
-                histo = fit_exp(histo, materials_dict_pos[material], *type, fit_file, "Q L R");
+                histo = fit_exp(histo, materials_dict_pos[material], *type, fit_file, "Q L R I");
                 histos_material[material].push_back(histo);
             }
         }
@@ -249,7 +255,7 @@ void create_histo(){
                         }
                     }
                     histos_p->SetNameTitle(&(material+"_"+position+*type)[0], &(material+"_"+position+*type)[0]);
-                    histos_p = fit_exp(histos_p, materials_dict_pos[material], *type, fit_file, "L R");
+                    histos_p = fit_exp(histos_p, materials_dict_pos[material], *type, fit_file, "L R I");
                     histos_pos[position]=histos_p;
                 }
                 //gROOT->SetBatch(kTRUE);
@@ -257,7 +263,15 @@ void create_histo(){
                 histo_tot = (TH1D*)histos_pos["up"]->Clone();
                 histo_tot->Add(histos_pos["down"]);
                 histo_tot->SetNameTitle(&(material+"_tot"+*type)[0], &(material+"_tot"+*type)[0]);
-                histo_tot = fit_exp(histo_tot, materials_dict_tot[material], *type, fit_file, "L R");
+                histo_tot = fit_exp(histo_tot, materials_dict_tot[material], *type, fit_file, "L R I");
+
+                cout << "\n Processing : " << material << "_sub" << endl;
+                histo_sub = (TH1D*)histos_pos["up"]->Clone();
+                histo_sub->Add(histos_pos["down"], -1);
+                histo_sub->Divide(histo_tot);
+                histo_sub->SetNameTitle(&(material+"_sub"+*type)[0], &(material+"_sub"+*type)[0]);
+                histo_sub = fit_exp(histo_sub, materials_dict_tot[material], *type, fit_file, "L R I");
+
             }
         }
         histo_file->Close();
