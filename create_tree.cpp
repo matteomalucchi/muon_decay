@@ -79,15 +79,16 @@ void create_tree(vector<string> materials, string run, vector<vector<double>> di
 
 void create_tree(){
     map <string, vector<string>> datasets ={
-                        {"fe4_run1", {"fe4", "fe4"}},
-                        {"fe4_run2", {"fe4", "fe4"}},
-                        {"fe4_pb4_run3", {"fe4", "fe4", "pb4", "pb4"}},
-                        {"fe4_pb4_run4", {"fe4", "fe4", "pb4", "pb4"}},
+                        {"fe4_run1", {"fe", "fe"}},
+                        {"fe4_run2", {"fe", "fe"}},
+                        {"fe4_pb4_run3", {"fe", "fe", "pb", "pb"}},
+                        {"fe4_pb4_run4", {"fe", "fe", "pb", "pb"}},
                         {"nacl_mag_run5", {"nacl", "nacl", "mag", "mag"}},
                         {"nacl_mag_run6", {"nacl", "nacl", "mag", "mag"}},
-                        {"fe2_al2_run7", {"fe2", "fe2", "al2", "al2"}},
+                        {"fe2_al2_run7", {"fe", "fe", "al", "al"}},
                         {"nacl_mag_run8", {"nacl", "nacl", "mag", "mag"}},
                         {"nacl_mag_run9", {"nacl", "nacl", "mag", "mag"}},
+                        {"mag_nacl_run10", {"mag", "mag", "nacl", "nacl"}},
 
     };
     vector<vector<double>> diff_time;
