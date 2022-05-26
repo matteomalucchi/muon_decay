@@ -106,13 +106,14 @@ void create_histo(){
         {"nacl_bottom", {100, 0.7, 200, 2.2, 10,
                      n_bin, inf, sup, 5}},
     };
-
+    
     TH1D histo;
     TH1D histo_tot ;
     TH1D histo_pos ;
     TH1D histo_off ;
     TH1D histo_sub ;
     TH1D histo_sum ;
+    TH1D* histo_asym;
 
     double offset;
     
@@ -122,7 +123,9 @@ void create_histo(){
     for(list<string>::const_iterator type = fit_types.begin(); type != fit_types.end(); ++type){
         cout << "\n################## Processing : " << *type <<" ##################" << endl;
         int q=0;
-        ofstream fit_file("fit_params/fit"+*type+".txt");
+        ofstream fit_file_exp("fit_params/fit_exp"+*type+".txt");
+        ofstream fit_file_sin("fit_params/fit_sin"+*type+".txt");
+
         TFile *histo_single_file= new TFile(&("histos_single/histo"+*type+".root")[0], "RECREATE");
         TFile *histo_combined_file= new TFile(&("histos_combined/histo"+*type+".root")[0], "RECREATE");
 
@@ -157,8 +160,8 @@ void create_histo(){
             if (material != ""){
                 histo = fill_histo(tree_file, *name, materials_dict_pos[material], *type);
                 gROOT->SetBatch(kTRUE);
-                fit_exp(&histo, materials_dict_pos[material], *type, fit_file, "Q L R", &offset);
-                save_plot(&histo, *type);
+                //fit_exp(&histo, materials_dict_pos[material], *type, fit_file_exp, "Q L R I", &offset);
+                //save_plot(&histo, *type);
                 histos_material[material].push_back(histo);
             }
         }
@@ -168,7 +171,7 @@ void create_histo(){
             const auto histos_m = h_m.second;
             if (histos_m.size()>0){
                 for (const auto & h_p : histos_pos){
-                    gROOT->SetBatch(kFALSE);
+                    gROOT->SetBatch(kTRUE);
                     const auto position = h_p.first;
                     auto histos_p = h_p.second;
                     cout << "\n Processing : " << material << "_" << position << endl;
@@ -182,7 +185,7 @@ void create_histo(){
                         }
                     }
                     histos_p.SetNameTitle(&(material+"_"+position+*type)[0], &(material+"_"+position+*type)[0]);
-                    fit_exp(&histos_p, materials_dict_pos[material], *type, fit_file, " L R", &offset);
+                    fit_exp(&histos_p, materials_dict_pos[material], *type, fit_file_exp, " L R I", &offset);
                     save_plot(&histos_p, *type);
                     histos_pos[position]=histos_p;
                     histos_pos[position].Sumw2();
@@ -198,22 +201,31 @@ void create_histo(){
                 histos_pos["up"].Copy(histo_tot);
                 histo_tot.Add(&histos_pos["down"]);
                 histo_tot.SetNameTitle(&(material+"_tot"+*type)[0], &(material+"_tot"+*type)[0]);
-                fit_exp(&histo_tot, materials_dict_pos[material], *type, fit_file, " L R", &offset);
+                fit_exp(&histo_tot, materials_dict_pos[material], *type, fit_file_exp, " L R I", &offset);
                 save_plot(&histo_tot, *type);
 
 
                 // histo asimmetry
                 if ((material.find("nacl") != string::npos ) || (material.find("mag") != string::npos )){
-                    gROOT->SetBatch(kTRUE);
+                    gROOT->SetBatch(kFALSE);
+
+                    //for (const auto & h_m : histos_material){
 
                     histos_pos["up"].Add(&offset_pos["up"], -1);
+                    for(int i=0; i< histos_pos["up"].GetNbinsX(); i++){
+                        if (histos_pos["up"].GetBinContent(i)<0) histos_pos["up"].SetBinContent(i, 0);
+                    }
                     histos_pos["down"].Add(&offset_pos["down"], -1);
+                    for(int i=0; i< histos_pos["down"].GetNbinsX(); i++){
+                        if (histos_pos["down"].GetBinContent(i)<0) histos_pos["down"].SetBinContent(i, 0);
+                    }
                     //save_plot(&histos_pos["up"], *type);
                     //save_plot(&histos_pos["down"], *type);
                     //gROOT->SetBatch(kTRUE);
 
                     cout << "\n Processing : " << material << "_sub" << endl;
-                    histos_pos["up"].Copy(histo_sub);
+                    
+                    /*histos_pos["up"].Copy(histo_sub);
                     histos_pos["up"].Copy(histo_sum);
                     histo_sub.SetNameTitle(&(material+"_sub"+*type)[0], &(material+"_sub"+*type)[0]);
                     histo_sum.SetNameTitle(&(material+"_sum"+*type)[0], &(material+"_sum"+*type)[0]);
@@ -223,7 +235,12 @@ void create_histo(){
                     //save_plot(&histo_sum, *type);
                     histo_sub.Divide(&histo_sum);
                     histo_sub.SetNameTitle(&(material+"_asym"+*type)[0], &(material+"_asym"+*type)[0]);
-                    save_plot(&histo_sub, *type);
+                    save_plot(&histo_sub, *type);*/
+                    histo_asym= (TH1D*)histos_pos["up"].GetAsymmetry(&histos_pos["down"]);
+                    histo_asym->SetNameTitle(&(material+"_asym"+*type)[0], &(material+"_asym"+*type)[0]);
+                    fit_sin(histo_asym, *type, "L R", fit_file_sin);
+                    save_plot(histo_asym, *type);
+
                 }
             }
         }

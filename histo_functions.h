@@ -107,8 +107,17 @@ void save_plot(TH1D* histo, string type){
     c->Write();
 }
 
-void fit_sin(TH1D* histo, string type){
-    
+void fit_sin(TH1D* histo, string type, string option, ofstream & fit_file){
+    string name = histo->GetName();
+    cout << histo->GetXaxis()->GetXmin() << endl;
+    TF1* sin = new TF1("sin", "[0]*sin([1]*x+[2])+[3]", histo->GetXaxis()->GetXmin(), 5);
+    sin->SetParameters(0.09, 4.9, 0.4, -0.2);
+    histo->Fit("sin", &(option)[0]);
+    fit_file << "\n\n####################### " << name << "#######################" << endl;
+    fit_file << "chi_square / ndof =    " << sin->GetChisquare() << "/" << sin->GetNDF() <<endl;
+    for (int i=0; i<sin->GetNpar(); i++) {
+        fit_file << sin->GetParName(i) << " =   " <<  sin->GetParameter(i) << " +- " << sin->GetParError(i) <<endl;
+    }
 }
 
 #endif
