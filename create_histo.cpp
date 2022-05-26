@@ -5,51 +5,12 @@
 
 
 #include "histo_functions.h"
+#include "histo_infos.h"
 
 using namespace std;
 
 
 void create_histo(){
-    // name of the trees
-    list <string> datasets ={
-                        "fe_top_up_run1",
-                        "fe_top_down_run1",
-                        "fe_top_up_run2",
-                        "fe_top_down_run2",
-                        "fe_top_up_run3",
-                        "fe_top_down_run3",
-                        "pb_bottom_up_run3",
-                        "pb_bottom_down_run3",
-                        "fe_top_up_run4",
-                        "fe_top_down_run4",
-                        "pb_bottom_up_run4",
-                        "pb_bottom_down_run4",
-                        "nacl_top_up_run5",
-                        "nacl_top_down_run5",
-                        "mag_bottom_up_run5",
-                        "mag_bottom_down_run5",
-                        "nacl_top_up_run6",
-                        "nacl_top_down_run6",
-                        "mag_bottom_up_run6",
-                        "mag_bottom_down_run6",
-                        "fe_top_up_run7",
-                        "fe_top_down_run7",
-                        "al_bottom_up_run7",
-                        "al_bottom_down_run7",
-                        "nacl_top_up_run8",
-                        "nacl_top_down_run8",
-                        "mag_bottom_up_run8",
-                        "mag_bottom_down_run8",
-                        "nacl_top_up_run9",
-                        "nacl_top_down_run9",
-                        "mag_bottom_up_run9",
-                        "mag_bottom_down_run9",
-                        "mag_top_up_run10",
-                        "mag_top_down_run10",
-                        "nacl_bottom_up_run10",
-                        "nacl_bottom_down_run10",                        
-                        };
-
     vector<TTree*> trees;
 
     /* fit_types:
@@ -64,49 +25,7 @@ void create_histo(){
                         //"_single_offset",
                         //"_single",
                     };
-    double bin_width = 0.08;
-    double inf = 0.3;
-    double sup = 30;
-    double n_bin = (sup-inf)/bin_width;
-    double norm_pos = 200;
 
-    // name of the material |
-    // norm exp_short | tau exp_short | norm exp_long | tau exp_long | offset exp |
-    // number of bins | range inf histo | range sup histo | start exp_long
-    map <string, vector<double>>  materials_dict_pos = {
-        {"fe_top", {norm_pos/1.8, 0.201, norm_pos, 2.197, 10,
-                     n_bin, 0.15, sup, 2}},
-        {"pb_bottom", {100, 0.08, 200, 2.2, 10,
-                     n_bin, 0.1, sup, 1}},
-        {"al_bottom", {norm_pos/1.8, 0.88, norm_pos, 2.197, 10,
-                     n_bin, 0.6, sup, 4}},
-        {"nacl_top", {100, 0.7, 200, 2.2, 10,
-                     n_bin, 0.5, sup, 4}},
-        {"mag_bottom", {100, 0.201, 200, 2.2, 10,
-                     n_bin, 0.15, sup, 2}},
-        {"mag_top", {100, 0.201, 200, 2.2, 10,
-                     n_bin, 0.15, sup, 2}},
-        {"nacl_bottom", {100, 0.7, 200, 2.2, 10,
-                     n_bin, 0.5, sup, 4}},
-    };
-
-    map <string, vector<double>>  materials_dict_tot = {
-        {"fe_top", {norm_pos/1.8, 0.201, norm_pos, 2.197, 10,
-                     n_bin, 0.15, sup, 2}},
-        {"pb_bottom", {100, 0.88, 200, 2.2, 10,
-                     n_bin, inf, sup, 5}},
-        {"al_bottom", {norm_pos/1.8, 0.88, norm_pos, 2.197, 10,
-                     n_bin, 0.6, sup, 4}},
-        {"nacl_top", {100, 0.7, 200, 2.2, 10,
-                     n_bin, inf, sup, 5}},
-        {"mag_bottom", {100, 0.201, 200, 2.2, 10,
-                     n_bin, inf, sup, 5}},
-        {"mag_top", {100, 0.201, 200, 2.2, 10,
-                     n_bin, inf, sup, 5}},
-        {"nacl_bottom", {100, 0.7, 200, 2.2, 10,
-                     n_bin, inf, sup, 5}},
-    };
-    
     TH1D histo;
     TH1D histo_tot ;
     TH1D histo_pos ;
@@ -208,7 +127,7 @@ void create_histo(){
 
 
                 // histo asimmetry
-                if ((material.find("nacl") != string::npos ) || (material.find("mag") != string::npos )){
+                //if ((material.find("nacl") != string::npos ) || (material.find("mag") != string::npos )){
                     gROOT->SetBatch(kFALSE);
 
                     for (auto & h_p : histos_pos){
@@ -229,11 +148,11 @@ void create_histo(){
                     
                     histo_asym= (TH1D*)histos_pos["up"].GetAsymmetry(&histos_pos["down"]);
                     histo_asym->SetNameTitle(&(material+"_asym"+*type)[0], &(material+"_asym"+*type)[0]);
-                    histo_asym->GetXaxis()->SetRangeUser(0.2, 3.5);
-                    fit_sin(histo_asym, *type, "L R I", fit_file_sin);
+                    histo_asym->GetXaxis()->SetRangeUser(0.1, 3.5);
+                    fit_cos(histo_asym, *type, "L R I", fit_file_sin);
                     save_plot(histo_asym, *type);
 
-                }
+                //}
             }
         }
         histo_single_file->Close();

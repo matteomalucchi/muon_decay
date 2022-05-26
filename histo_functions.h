@@ -102,26 +102,27 @@ void save_plot(TH1D* histo, string type){
     gStyle->SetOptStat("neou");
     gStyle->SetOptFit(1111);
     TCanvas *c = new TCanvas(&(name)[0], &(name)[0]);
-    histo->Draw("E L");
+    histo->SetMarkerStyle(kFullCircle);
+    histo->Draw("E");
     c->SaveAs(&("images/"+type+"/"+name+".png")[0]);
     c->Write();
 }
 
-void fit_sin(TH1D* histo, string type, string option, ofstream & fit_file){
+void fit_cos(TH1D* histo, string type, string option, ofstream & fit_file){
     string name = histo->GetName();
     cout << histo->GetXaxis()->GetXmin() << endl;
-    TF1* sin = new TF1("sin", "[0]*cos([1]*x+[2])+[3]", histo->GetXaxis()->GetXmin(), histo->GetXaxis()->GetXmax());
-    sin->SetParameters(0.09, 4.9, 0.4, -0.2);
-    sin->SetParLimits(0, 0, 0.3);
-    sin->SetParLimits(1, 0, 6);
-    sin->SetParLimits(2, 0, 1);
-    //sin->FixParameter(2, 0);
-    sin->SetParLimits(3, -0.5, 0.5);
-    histo->Fit("sin", &(option)[0]);
+    TF1* cos = new TF1("cos", "[0]*sin([1]*x+[2])+[3]", histo->GetXaxis()->GetXmin(),histo->GetXaxis()->GetXmax());
+    cos->SetParameters(0.09, 4.9, 0.4, -0.2);
+    cos->SetParLimits(0, 0, 0.3);
+    cos->SetParLimits(1, 0, 6);
+    cos->SetParLimits(2, 0, 1);
+    //cos->FixParameter(2, 0);
+    cos->SetParLimits(3, -0.5, 0.5);
+    histo->Fit("cos", &(option)[0]);
     fit_file << "\n\n####################### " << name << "#######################" << endl;
-    fit_file << "chi_square / ndof =    " << sin->GetChisquare() << "/" << sin->GetNDF() <<endl;
-    for (int i=0; i<sin->GetNpar(); i++) {
-        fit_file << sin->GetParName(i) << " =   " <<  sin->GetParameter(i) << " +- " << sin->GetParError(i) <<endl;
+    fit_file << "chi_square / ndof =    " << cos->GetChisquare() << "/" << cos->GetNDF() <<endl;
+    for (int i=0; i<cos->GetNpar(); i++) {
+        fit_file << cos->GetParName(i) << " =   " <<  cos->GetParameter(i) << " +- " << cos->GetParError(i) <<endl;
     }
 }
 
