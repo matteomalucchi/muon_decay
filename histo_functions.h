@@ -107,4 +107,8 @@ void save_plot(TH1D* histo, string type){
     c->Write();
 }
 
+void fit_sin(TH1D* histo, string type){
+    
+}
+
 #endif

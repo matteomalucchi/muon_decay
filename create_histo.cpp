@@ -203,7 +203,7 @@ void create_histo(){
 
 
                 // histo asimmetry
-                if ((material.find("nacl_top") != string::npos ) || (material.find("mag_top") != string::npos )){
+                if ((material.find("nacl") != string::npos ) || (material.find("mag") != string::npos )){
                     gROOT->SetBatch(kTRUE);
 
                     histos_pos["up"].Add(&offset_pos["up"], -1);
@@ -218,9 +218,9 @@ void create_histo(){
                     histo_sub.SetNameTitle(&(material+"_sub"+*type)[0], &(material+"_sub"+*type)[0]);
                     histo_sum.SetNameTitle(&(material+"_sum"+*type)[0], &(material+"_sum"+*type)[0]);
                     histo_sub.Add(&histos_pos["down"], -1);
-                    //histo_sum.Add(&histos_pos["down"], +1);
+                    histo_sum.Add(&histos_pos["down"], +1);
                     save_plot(&histo_sub, *type);
-                    save_plot(&histo_sum, *type);
+                    //save_plot(&histo_sum, *type);
                     histo_sub.Divide(&histo_sum);
                     histo_sub.SetNameTitle(&(material+"_asym"+*type)[0], &(material+"_asym"+*type)[0]);
                     save_plot(&histo_sub, *type);
