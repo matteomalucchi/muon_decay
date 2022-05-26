@@ -194,11 +194,13 @@ void create_histo(){
                         histo_off.SetBinContent(i, offset);
                     }
                     offset_pos[position] = histo_off;
+                    offset_pos[position].Sumw2();
                 }
 
                 // histo total
                 cout << "\n Processing : " << material << "_tot" << endl;
                 histos_pos["up"].Copy(histo_tot);
+                histo_tot.Sumw2();
                 histo_tot.Add(&histos_pos["down"]);
                 histo_tot.SetNameTitle(&(material+"_tot"+*type)[0], &(material+"_tot"+*type)[0]);
                 fit_exp(&histo_tot, materials_dict_pos[material], *type, fit_file_exp, " L R I", &offset);
@@ -209,36 +211,26 @@ void create_histo(){
                 if ((material.find("nacl") != string::npos ) || (material.find("mag") != string::npos )){
                     gROOT->SetBatch(kFALSE);
 
-                    //for (const auto & h_m : histos_material){
+                    for (auto & h_p : histos_pos){
+                        const auto position = h_p.first;
+                        //auto histos_p = h_p.second;
 
-                    histos_pos["up"].Add(&offset_pos["up"], -1);
-                    for(int i=0; i< histos_pos["up"].GetNbinsX(); i++){
-                        if (histos_pos["up"].GetBinContent(i)<0) histos_pos["up"].SetBinContent(i, 0);
+                        histos_pos[position].Add(&offset_pos[position], -1);
+                        for(int i=0; i< histos_pos[position].GetNbinsX(); i++){
+                            if (histos_pos[position].GetBinContent(i)<0) histos_pos[position].SetBinContent(i, 0);
+                        }
                     }
-                    histos_pos["down"].Add(&offset_pos["down"], -1);
-                    for(int i=0; i< histos_pos["down"].GetNbinsX(); i++){
-                        if (histos_pos["down"].GetBinContent(i)<0) histos_pos["down"].SetBinContent(i, 0);
-                    }
+
                     //save_plot(&histos_pos["up"], *type);
                     //save_plot(&histos_pos["down"], *type);
                     //gROOT->SetBatch(kTRUE);
 
                     cout << "\n Processing : " << material << "_sub" << endl;
                     
-                    /*histos_pos["up"].Copy(histo_sub);
-                    histos_pos["up"].Copy(histo_sum);
-                    histo_sub.SetNameTitle(&(material+"_sub"+*type)[0], &(material+"_sub"+*type)[0]);
-                    histo_sum.SetNameTitle(&(material+"_sum"+*type)[0], &(material+"_sum"+*type)[0]);
-                    histo_sub.Add(&histos_pos["down"], -1);
-                    histo_sum.Add(&histos_pos["down"], +1);
-                    save_plot(&histo_sub, *type);
-                    //save_plot(&histo_sum, *type);
-                    histo_sub.Divide(&histo_sum);
-                    histo_sub.SetNameTitle(&(material+"_asym"+*type)[0], &(material+"_asym"+*type)[0]);
-                    save_plot(&histo_sub, *type);*/
                     histo_asym= (TH1D*)histos_pos["up"].GetAsymmetry(&histos_pos["down"]);
                     histo_asym->SetNameTitle(&(material+"_asym"+*type)[0], &(material+"_asym"+*type)[0]);
-                    fit_sin(histo_asym, *type, "L R", fit_file_sin);
+                    histo_asym->GetXaxis()->SetRangeUser(0.2, 3.5);
+                    fit_sin(histo_asym, *type, "L R I", fit_file_sin);
                     save_plot(histo_asym, *type);
 
                 }

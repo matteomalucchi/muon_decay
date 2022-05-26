@@ -31,13 +31,13 @@ void fit_exp(TH1D* histo, vector<double> infos, string type, ofstream & fit_file
         exp_tot->SetParameter(0, infos[0]);
         exp_tot->SetParameter(1, infos[1]);
         exp_tot->SetParLimits(0, 0, infos[1]+pow(10, 5));
-        //exp_tot->SetParLimits(1, infos[1]*3/4, infos[1]*4/3);
+        exp_tot->SetParLimits(1, infos[1]*1/2, infos[1]*3/2);
         if (type.find("double") != string::npos){
             exp_long = new TF1("exp_long", "[0]*exp(-x/[1])+[2]", infos[8], infos[7]);
             exp_long->SetParNames("norm_long (a.u.)", "tau_long (#mu s)", "offset_long (a.u.)");
             exp_long->SetParameters(infos[2], infos[3], infos[4]);
             exp_long->SetParLimits(0, 0, infos[2]+pow(10, 6));
-            //exp_long->SetParLimits(1, infos[3]*3/4, infos[3]*4/3);
+            exp_long->SetParLimits(1, infos[3]*1/2, infos[3]*3/2);
 
             exp_long->SetLineColor(kGreen);
             histo->Fit("exp_long", &(option)[0]);
@@ -55,7 +55,7 @@ void fit_exp(TH1D* histo, vector<double> infos, string type, ofstream & fit_file
             exp_tot->SetParameter(3, infos[3]);
             exp_tot->SetParameter(4, infos[4]);
             exp_tot->SetParLimits(2, 0, infos[2]+pow(10, 6));
-            //exp_tot->SetParLimits(3, infos[3]*3/4, infos[3]*4/3);
+            exp_tot->SetParLimits(3, infos[3]*1/2, infos[3]*3/2);
         }
 
     }
@@ -102,7 +102,7 @@ void save_plot(TH1D* histo, string type){
     gStyle->SetOptStat("neou");
     gStyle->SetOptFit(1111);
     TCanvas *c = new TCanvas(&(name)[0], &(name)[0]);
-    histo->Draw("HIST");
+    histo->Draw("E L");
     c->SaveAs(&("images/"+type+"/"+name+".png")[0]);
     c->Write();
 }
@@ -110,8 +110,13 @@ void save_plot(TH1D* histo, string type){
 void fit_sin(TH1D* histo, string type, string option, ofstream & fit_file){
     string name = histo->GetName();
     cout << histo->GetXaxis()->GetXmin() << endl;
-    TF1* sin = new TF1("sin", "[0]*sin([1]*x+[2])+[3]", histo->GetXaxis()->GetXmin(), 5);
+    TF1* sin = new TF1("sin", "[0]*cos([1]*x+[2])+[3]", histo->GetXaxis()->GetXmin(), histo->GetXaxis()->GetXmax());
     sin->SetParameters(0.09, 4.9, 0.4, -0.2);
+    sin->SetParLimits(0, 0, 0.3);
+    sin->SetParLimits(1, 0, 6);
+    sin->SetParLimits(2, 0, 1);
+    //sin->FixParameter(2, 0);
+    sin->SetParLimits(3, -0.5, 0.5);
     histo->Fit("sin", &(option)[0]);
     fit_file << "\n\n####################### " << name << "#######################" << endl;
     fit_file << "chi_square / ndof =    " << sin->GetChisquare() << "/" << sin->GetNDF() <<endl;
