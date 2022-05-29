@@ -90,7 +90,8 @@ void create_tree(){
                         {"nacl_mag_run9", {"nacl", "nacl", "mag", "mag"}},
                         {"mag_nacl_run10", {"mag", "mag", "nacl", "nacl"}},
                         {"fe4_al4_run11", {"fe", "fe", "al", "al"}},
-
+                        {"mag_nacl_run12", {"mag", "mag", "nacl", "nacl"}},
+                        {"afterpulse_run13", {"ap", "ap", "ap", "ap"}},
     };
     vector<vector<double>> diff_time;
     map <string, vector<TTree*>>  tree_map = {
@@ -99,6 +100,7 @@ void create_tree(){
         {"al", {}},
         {"nacl", {}},
         {"mag", {}},
+        {"ap", {}}
     };
     TFile *tree_file= new TFile(&("new_tree.root")[0], "RECREATE");
     for (const auto &dataset : datasets){
