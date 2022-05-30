@@ -8,7 +8,7 @@ TH1D fill_histo(TFile* tree_file, string name, vector<double> ranges, string typ
     double t;
     TTree* tree = (TTree*) tree_file->Get(&(name)[0]);
     double n_bin =(ranges[7]-ranges[6])/ranges[5];
-    TH1D histo = TH1D(&(name+type)[0],&(name+type)[0], n_bin, /*ranges[6]*/0, ranges[7]);
+    TH1D histo = TH1D(&(name+type)[0],&(name+type)[0], n_bin, ranges[6], ranges[7]);
 
     Int_t nentries = (Int_t)tree->GetEntries();
     tree->SetBranchAddress("t",&t);
@@ -46,21 +46,23 @@ TH1D fill_histo_asym(TFile* tree_file, string name, vector<double> ranges, strin
     return histo;
 }
 
-void fit_exp(TH1D* histo, vector<double> infos, string type, ofstream & fit_file, string option, double *offset , double flu_inf=0., double flu_sup=0.){
+void fit_exp(TH1D* histo, vector<double> infos, string type, ofstream & fit_file, string option, double *offset , double flu_inf=0., double flu_sup=0., double flu_short=0.){
 
     string name = histo->GetName();
     fit_file << "\n\n####################### " << name << "#######################" << endl;
     TF1 *exp_long, *exp_tot;
     if (type.find("offset") != string::npos) {
-        exp_tot = new TF1("exp_tot", "[0]*exp(-x/[1])+[2]*exp(-x/[3])+[4]", infos[6], infos[7]);
-        exp_tot->SetParNames("norm_short (a.u.)", "tau_short (#mu s)", "norm_long (a.u.)", "tau_long (#mu s)", "offset (a.u.)");
+        exp_tot = new TF1("exp_tot", "[0]*exp(-x/[1])+[2]*exp(-x/[3])+[4]", infos[6]+flu_short, infos[7]+flu_sup);
+        exp_tot->SetParNames("norm_short", "tau_short (#mu s)", "norm_long", "tau_long (#mu s)", "offset");
         exp_tot->SetParameter(0, infos[0]);
         exp_tot->SetParameter(1, infos[1]);
+        exp_tot->SetParameter(2, infos[2]);
         exp_tot->SetParLimits(0, 0, infos[1]+pow(10, 6));
         exp_tot->SetParLimits(1, infos[1]*1/3, infos[1]*2);
+        exp_tot->SetParLimits(2,  0, infos[1]+pow(10, 6));
         if (type.find("double") != string::npos){
             exp_long = new TF1("exp_long", "[0]*exp(-x/[1])+[2]", infos[8]+flu_inf, infos[7]+flu_sup);
-            exp_long->SetParNames("norm_long (a.u.)", "tau_long (#mu s)", "offset_long (a.u.)");
+            exp_long->SetParNames("norm_long", "tau_long (#mu s)", "offset_long");
             exp_long->SetParameters(infos[2], infos[3], infos[4]);
             exp_long->SetParLimits(0, 0, infos[2]+pow(10, 6));
             exp_long->SetParLimits(1, infos[3]*1/3, infos[3]*2);
@@ -69,15 +71,18 @@ void fit_exp(TH1D* histo, vector<double> infos, string type, ofstream & fit_file
             exp_long->SetLineColor(kGreen);
             histo->Fit("exp_long", &(option)[0]);
             //exp_tot->FixParameter(1, infos[1]);
-            exp_tot->FixParameter(2, exp_long->GetParameter(0));
-            exp_tot->FixParameter(3, exp_long->GetParameter(1)/*2.19*/);
+            //exp_tot->FixParameter(2, exp_long->GetParameter(0));
+            //exp_tot->SetParameter(2, exp_long->GetParameter(0));
+            exp_tot->FixParameter(3, exp_long->GetParameter(1)/*2.197*/);
             if (type.find("fix") != string::npos) {
                 exp_tot->FixParameter(4, exp_long->GetParameter(2));
             }
             else if (type.find("fix") == string::npos) {
                 exp_tot->SetParameter(4, infos[4]);
+                exp_tot->SetParLimits(4,  0, infos[4]*1000);
             }
         }
+        
         else if (type.find("single") != string::npos){
             exp_tot->SetParameter(2, infos[2]);
             exp_tot->SetParameter(3, infos[3]);
@@ -89,12 +94,12 @@ void fit_exp(TH1D* histo, vector<double> infos, string type, ofstream & fit_file
     }
     else if (type.find("offset") == string::npos) {
         exp_tot = new TF1("exp_tot", "[0]*exp(-x/[1])+[2]*exp(-x/[3])", infos[6], infos[7]);
-        exp_tot->SetParNames("norm_short (a.u.)", "tau_short (#mu s)", "norm_long (a.u.)", "tau_long (#mu s)");
+        exp_tot->SetParNames("norm_short", "tau_short (#mu s)", "norm_long", "tau_long (#mu s)");
         exp_tot->SetParameter(0, infos[0]);
         exp_tot->SetParameter(1, infos[1]);
         if (type.find("double") != string::npos){
             exp_long = new TF1("exp_long", "[0]*exp(-x/[1])", infos[8], infos[7]);
-            exp_long->SetParNames("norm_long (a.u.)", "tau_long (#mu s)");
+            exp_long->SetParNames("norm_long", "tau_long (#mu s)");
             exp_long->SetParameters(infos[2], infos[3]);
             exp_long->SetLineColor(kGreen);
             histo->Fit("exp_long", &(option)[0]);
@@ -145,21 +150,23 @@ void fit_exp_asym (TH1D* histo, vector<double> infos, string type, string option
 
 }
 
-void fit_sin(TH1D* histo, string type, string option, ofstream & fit_file, vector<double> infos){
+void fit_cos(TH1D* histo, string type, string option, ofstream & fit_file, vector<double> infos, int fix =0){
     string name = histo->GetName();
-    TF1* sin_func = new TF1("sin_func", "[0]*cos([1]*x+[2])+[3]", histo->GetXaxis()->GetXmin(),histo->GetXaxis()->GetXmax());
-    sin_func->SetParameters(infos[9], infos[10], infos[11], infos[12]);
-    sin_func->SetParLimits(0, 0.01, 2);
-    sin_func->SetParLimits(1, 0, 50);
-    sin_func->SetParLimits(2, -4, 4);
-    sin_func->FixParameter(2, 0);
-    sin_func->SetParLimits(3, -2, 1);
-    histo->Fit("sin_func", &(option)[0]);
-    cout << "chi_square / ndof =    " << sin_func->GetChisquare() << "/" << sin_func->GetNDF() <<endl;
-    fit_file << "\n\n####################### " << name << "sin_func " << "#######################" << endl;
-    fit_file << "chi_square / ndof =    " << sin_func->GetChisquare() << "/" << sin_func->GetNDF() <<endl;
-    for (int i=0; i<sin_func->GetNpar(); i++) {
-        fit_file << sin_func->GetParName(i) << " =   " <<  sin_func->GetParameter(i) << " +- " << sin_func->GetParError(i) <<endl;
+    TF1* cos_func = new TF1("cos_func", "[0]*cos([1]*x+[2])+[3]", histo->GetXaxis()->GetXmin(),histo->GetXaxis()->GetXmax());
+    cos_func->SetParameters(infos[9], infos[10], infos[11], infos[12]);
+    cos_func->SetParNames("norm", "#omega (rad/#mu s)", "#phi", "offset");
+    cos_func->SetParLimits(0, 0.01, 2);
+    cos_func->SetParLimits(1, 0, 50);
+    cos_func->SetParLimits(2, -4, 4);
+    cos_func->FixParameter(2, 0);
+    cos_func->SetParLimits(3, -2, 1);
+    if(fix==1) cos_func->FixParameter(3, 0);
+    histo->Fit("cos_func", &(option)[0]);
+    cout << "chi_square / ndof =    " << cos_func->GetChisquare() << "/" << cos_func->GetNDF() <<endl;
+    fit_file << "\n\n####################### " << name << "cos_func " << "#######################" << endl;
+    fit_file << "chi_square / ndof =    " << cos_func->GetChisquare() << "/" << cos_func->GetNDF() <<endl;
+    for (int i=0; i<cos_func->GetNpar(); i++) {
+        fit_file << cos_func->GetParName(i) << " =   " <<  cos_func->GetParameter(i) << " +- " << cos_func->GetParError(i) <<endl;
     }
 }
 
@@ -167,6 +174,7 @@ void fit_constant(TH1D* histo, string type, string option, ofstream & fit_file){
     string name = histo->GetName();
     cout << histo->GetXaxis()->GetXmin() << endl;
     TF1* constant = new TF1("const", "[0]", histo->GetXaxis()->GetXmin(), histo->GetXaxis()->GetXmax());
+    constant->SetParName(0, "offset");
     constant->SetParameter(0, -0.1);
     constant->SetParLimits(0, -2, 2);
     histo->Fit("const", &(option)[0]);
@@ -178,6 +186,14 @@ void fit_constant(TH1D* histo, string type, string option, ofstream & fit_file){
     }
 }
 
+TH1D* subtract_histo(TH1D* histo_mag, TH1D* histo_nacl){
+    TH1D* histo_sub;
+    histo_sub = (TH1D*)histo_mag->Clone();
+    histo_sub->Sumw2();
+    histo_sub->Add(histo_nacl, -1);
+    return histo_sub;
+}
+
 void save_plot(TH1D* histo, string type){
     string name = histo->GetName();
     cout << name << endl;
@@ -186,12 +202,23 @@ void save_plot(TH1D* histo, string type){
     
     //histo->SetMarkerStyle(kFullCircle);
     TF1* func;
-    if (name.find("asym_sin") != string::npos) func = histo->GetFunction("sin_func");
-    else if (name.find("asym_const") != string::npos) func = histo->GetFunction("const");
+    if (name.find("asym_cos") != string::npos) {
+        func = histo->GetFunction("cos_func");
+        gStyle->SetOptStat("");
+        gStyle->SetOptFit(1111);
+    }
+    else if (name.find("asym_const") != string::npos) {
+        func = histo->GetFunction("const");
+        gStyle->SetOptStat("");
+        gStyle->SetOptFit(1111);
+    }
     else  {
         func = histo->GetFunction("exp_tot");
         gPad-> SetLogy();
+        gStyle->SetOptStat("neou");
+        gStyle->SetOptFit(1112);
     }
+    
     histo->Draw("E");
     func->Draw("SAME");
     c->Update();
@@ -202,16 +229,15 @@ void save_plot(TH1D* histo, string type){
     st->SetY1NDC(0.7); //new x start position
     st->SetY2NDC(0.9); //new x end position
 
-    gStyle->SetOptStat("neou");
-    gStyle->SetOptFit(1112);
-    /*auto legend = new TLegend(0.7,0.6,0.9,0.7);
+
+    auto legend = new TLegend(0.7,0.6,0.9,0.7);
     //legend->SetHeader("The Legend Title","C"); // option "C" allows to center the header
     legend->AddEntry(histo, &(name)[0],"l");
-    if (name.find("asym") != string::npos) legend->AddEntry(func, "sin","l");
+    if (name.find("asym") != string::npos) legend->AddEntry(func, "cos","l");
     else legend->AddEntry(func, "exp","l");
-    legend->Draw();*/
+    legend->Draw();
 
-    c->BuildLegend(0.7,0.6,0.9,0.7);
+    //c->BuildLegend(0.7,0.6,0.9,0.7);
 
     c->SaveAs(&("images/"+type+"/"+name+".png")[0]);
     c->Write();

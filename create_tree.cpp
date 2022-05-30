@@ -92,6 +92,7 @@ void create_tree(){
                         {"fe4_al4_run11", {"fe", "fe", "al", "al"}},
                         {"mag_nacl_run12", {"mag", "mag", "nacl", "nacl"}},
                         {"afterpulse_run13", {"ap", "ap", "ap", "ap"}},
+                        {"mag_nacl_run14", {"mag", "mag", "nacl", "nacl"}},
     };
     vector<vector<double>> diff_time;
     map <string, vector<TTree*>>  tree_map = {

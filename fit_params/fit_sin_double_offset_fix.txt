@@ -1,8 +1,130 @@
 
 
 ####################### al_bottom_asym_sin_double_offset_fixsin_func #######################
-chi_square / ndof =    9.20435/12
-p0 =   0.0623444 +- 0.028867
-p1 =   8.08142 +- 0.22349
+chi_square / ndof =    28.4146/31
+p0 =   0.0423541 +- 0.0252685
+p1 =   8.09675 +- 0.26555
 p2 =   0 +- 0
-p3 =   -0.196829 +- 0.0172777
+p3 =   -0.205716 +- 0.0177367
+
+
+####################### al_bottom_asym_const_double_offset_fix_constant #######################
+chi_square / ndof =    31.2163/33
+p0 =   -0.201784 +- 0.0175793
+
+
+####################### ap_asym_sin_double_offset_fixsin_func #######################
+chi_square / ndof =    30.8754/33
+p0 =   0.0194848 +- 0.00802992
+p1 =   2.81955 +- 0.127915
+p2 =   0 +- 0
+p3 =   -0.936955 +- 0.00488232
+
+
+####################### ap_asym_const_double_offset_fix_constant #######################
+chi_square / ndof =    36.7783/35
+p0 =   -0.94147 +- 0.00442584
+
+
+####################### fe_top_asym_sin_double_offset_fixsin_func #######################
+chi_square / ndof =    32.5908/33
+p0 =   0.0239716 +- 0.0150831
+p1 =   8.97775 +- 0.36037
+p2 =   0 +- 0
+p3 =   -0.0612777 +- 0.0100959
+
+
+####################### fe_top_asym_const_double_offset_fix_constant #######################
+chi_square / ndof =    35.1102/35
+p0 =   -0.0600374 +- 0.010063
+
+
+####################### mag_asym_sin_double_offset_fixsin_func #######################
+chi_square / ndof =    38.4817/33
+p0 =   0.0367903 +- 0.0140828
+p1 =   9.1243 +- 0.17341
+p2 =   0 +- 0
+p3 =   -0.144065 +- 0.00934502
+
+
+####################### mag_asym_const_double_offset_fix_constant #######################
+chi_square / ndof =    45.2983/35
+p0 =   -0.141583 +- 0.00929199
+
+
+####################### mag_bottom_asym_sin_double_offset_fixsin_func #######################
+chi_square / ndof =    32.1672/33
+p0 =   0.0453182 +- 0.0159555
+p1 =   9.23742 +- 0.19224
+p2 =   0 +- 0
+p3 =   -0.19985 +- 0.0105902
+
+
+####################### mag_bottom_asym_const_double_offset_fix_constant #######################
+chi_square / ndof =    40.2236/35
+p0 =   -0.196599 +- 0.0105237
+
+
+####################### mag_top_asym_sin_double_offset_fixsin_func #######################
+chi_square / ndof =    39.5872/34
+p0 =   0.0300131 +- 0.027966
+p1 =   8.91274 +- 0.278294
+p2 =   0 +- 0
+p3 =   0.039502 +- 0.0190119
+
+
+####################### mag_top_asym_const_double_offset_fix_constant #######################
+chi_square / ndof =    40.7316/36
+p0 =   0.0411552 +- 0.0189394
+
+
+####################### nacl_asym_sin_double_offset_fixsin_func #######################
+chi_square / ndof =    46.1102/32
+p0 =   0.032289 +- 0.0149064
+p1 =   9.40324 +- 0.228846
+p2 =   0 +- 0
+p3 =   -0.140565 +- 0.0102111
+
+
+####################### nacl_asym_const_double_offset_fix_constant #######################
+chi_square / ndof =    50.7988/34
+p0 =   -0.137978 +- 0.0101401
+
+
+####################### nacl_bottom_asym_sin_double_offset_fixsin_func #######################
+chi_square / ndof =    34.1595/32
+p0 =   0.0355529 +- 0.0183609
+p1 =   9.60917 +- 0.283434
+p2 =   0 +- 0
+p3 =   -0.21268 +- 0.01272
+
+
+####################### nacl_bottom_asym_const_double_offset_fix_constant #######################
+chi_square / ndof =    37.9019/34
+p0 =   -0.209386 +- 0.0126051
+
+
+####################### nacl_top_asym_sin_double_offset_fixsin_func #######################
+chi_square / ndof =    48.0879/32
+p0 =   0.0420297 +- 0.0246751
+p1 =   9.25655 +- 0.224525
+p2 =   0 +- 0
+p3 =   -0.0168625 +- 0.0167304
+
+
+####################### nacl_top_asym_const_double_offset_fix_constant #######################
+chi_square / ndof =    50.9807/34
+p0 =   -0.0141757 +- 0.0166557
+
+
+####################### pb_bottom_asym_sin_double_offset_fixsin_func #######################
+chi_square / ndof =    51.8683/33
+p0 =   0.0184629 +- 0.0151865
+p1 =   3.97328 +- 0.27278
+p2 =   0 +- 0
+p3 =   -0.174323 +- 0.0105828
+
+
+####################### pb_bottom_asym_const_double_offset_fix_constant #######################
+chi_square / ndof =    53.3406/35
+p0 =   -0.178127 +- 0.010103
