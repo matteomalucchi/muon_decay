@@ -27,19 +27,19 @@ void create_asym(){
     double offset;
 
 
-    TFile *tree_file= new TFile("new_tree.root", "READ");
+    TFile *tree_file= new TFile("tree.root", "READ");
     string type ="";
 
     cout << "\n################## Processing : " << type <<" ##################" << endl;
     int q=0;
-    ofstream fit_file_cos("fit_params/fit_cos"+type+".txt");
+    ofstream fit_file_cos("fit_params/fit_asym"+type+".txt");
 
     TFile *histo_asym_file= new TFile(&("histo_asym"+type+".root")[0], "RECREATE");
 
     map <string, vector<TH1D>> histos_material = {
-        /*{"fe_top", {}},
+        {"fe_top", {}},
         {"pb_bottom", {}},
-        {"al_bottom", {}},*/
+        {"al_bottom", {}},
         //{"ap", {}},
         {"nacl_top", {}},
         {"mag_bottom", {}},
@@ -128,7 +128,6 @@ void create_asym(){
             histo_asym_cos= (TH1D*)histos_pos["up"].GetAsymmetry(&histos_pos["down"]);
             histo_asym_cos->SetNameTitle(&(material+"_asym_cos"+type)[0], &(material+"_asym_cos"+type)[0]);
             histo_asym_cos->GetXaxis()->SetRangeUser(0.5, materials_dict_pos[material][14]);
-
             for (auto h_s : histos_sub){
                 const auto name = h_s.first;
                 if ((string)histo_asym_cos->GetName()==name){
@@ -138,12 +137,12 @@ void create_asym(){
             }
 
             fit_cos(histo_asym_cos, type, "R I", fit_file_cos, materials_dict_pos[material]);
-            save_plot(histo_asym_cos, type);
+            save_plot(histo_asym_cos, "_asym");
 
             histo_asym_const = histo_asym_cos;
             histo_asym_const->SetNameTitle(&(material+"_asym_const"+type)[0], &(material+"_asym_const"+type)[0]);
             fit_constant(histo_asym_const, type, "R I", fit_file_cos);
-            save_plot(histo_asym_const, type);
+            save_plot(histo_asym_const, "_asym");
 
         }
     }
@@ -156,12 +155,12 @@ void create_asym(){
         histo_sub_cos->SetNameTitle(&(pos+"_sub_asym_cos"+type)[0], &(pos+"_sub_asym_cos"+type)[0]);
     
         fit_cos(histo_sub_cos, type, "R I", fit_file_cos, materials_dict_pos["mag"]);
-        save_plot(histo_sub_cos, type);
+        save_plot(histo_sub_cos, "_asym");
 
         TH1D* histo_sub_const = histo_sub_cos;
         histo_sub_const->SetNameTitle(&(pos+"_sub_asym_const"+type)[0], &(pos+"_sub_asym_const"+type)[0]);
         fit_constant(histo_sub_const, type, "R I", fit_file_cos);
-        save_plot(histo_sub_const, type);
+        save_plot(histo_sub_const, "_asym");
     
     }
 

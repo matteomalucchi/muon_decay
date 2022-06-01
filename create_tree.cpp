@@ -4,9 +4,8 @@
 
 using namespace std;
 
-// eventi 1122
-// eventi in cui avviene 112 con 1 e 2 molto vicini
-
+// top: start 40, stop up 40 ns, stop down -1 ns 
+// bottom: start 40, stop up 40 ns, stop down +5 ns 
 
 vector<vector<double>> read_time(string name, int numb){
     ifstream myfile;
@@ -103,7 +102,7 @@ void create_tree(){
         {"mag", {}},
         {"ap", {}}
     };
-    TFile *tree_file= new TFile(&("new_tree.root")[0], "RECREATE");
+    TFile *tree_file= new TFile(&("tree.root")[0], "RECREATE");
     for (const auto &dataset : datasets){
         const auto name = dataset.first;
         const auto materials = dataset.second;

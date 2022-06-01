@@ -1,0 +1,156 @@
+
+
+####################### al_bottom_asym_coscos_func #######################
+chi_square / ndof =    30.0693/33
+norm =   0.0257357 +- 0.0251346
+#omega (rad/#mu s) =   8.17489 +- 0.365122
+#phi =   0 +- 0
+offset =   -0.200503 +- 0.0167622
+
+
+####################### al_bottom_asym_const_constant #######################
+chi_square / ndof =    31.1117/35
+offset =   -0.198713 +- 0.0166658
+
+
+####################### fe_top_asym_coscos_func #######################
+chi_square / ndof =    33.5123/33
+norm =   0.0214364 +- 0.0150186
+#omega (rad/#mu s) =   9.94423 +- 0.502505
+#phi =   0 +- 0
+offset =   -0.0191668 +- 0.0100639
+
+
+####################### fe_top_asym_const_constant #######################
+chi_square / ndof =    35.5454/35
+offset =   -0.0176042 +- 0.0100019
+
+
+####################### mag_asym_coscos_func #######################
+chi_square / ndof =    36.6615/31
+norm =   0.0376455 +- 0.0141938
+#omega (rad/#mu s) =   9.18744 +- 0.172154
+#phi =   0 +- 0
+offset =   -0.135806 +- 0.00944698
+
+
+####################### mag_asym_const_constant #######################
+chi_square / ndof =    43.6876/33
+offset =   -0.133383 +- 0.00940248
+
+
+####################### mag_bottom_asym_coscos_func #######################
+chi_square / ndof =    20.9114/23
+norm =   0.0509832 +- 0.0167684
+#omega (rad/#mu s) =   9.35687 +- 0.180816
+#phi =   0 +- 0
+offset =   -0.196823 +- 0.0112118
+
+
+####################### mag_bottom_asym_const_constant #######################
+chi_square / ndof =    30.155/25
+offset =   -0.19336 +- 0.0111447
+
+
+####################### mag_top_asym_coscos_func #######################
+chi_square / ndof =    25.8052/33
+norm =   0.0318094 +- 0.0280613
+#omega (rad/#mu s) =   8.98402 +- 0.301627
+#phi =   0 +- 0
+offset =   0.0759263 +- 0.0189734
+
+
+####################### mag_top_asym_const_constant #######################
+chi_square / ndof =    27.0838/35
+offset =   0.0780672 +- 0.0188746
+
+
+####################### nacl_asym_coscos_func #######################
+chi_square / ndof =    28.0903/31
+norm =   0.0285494 +- 0.0151577
+#omega (rad/#mu s) =   9.53113 +- 0.242877
+#phi =   0 +- 0
+offset =   -0.127317 +- 0.0101638
+
+
+####################### nacl_asym_const_constant #######################
+chi_square / ndof =    31.6297/33
+offset =   -0.125136 +- 0.0100954
+
+
+####################### nacl_bottom_asym_coscos_func #######################
+chi_square / ndof =    25.3492/23
+norm =   0.030897 +- 0.0196238
+#omega (rad/#mu s) =   9.25513 +- 0.316189
+#phi =   0 +- 0
+offset =   -0.217436 +- 0.0131182
+
+
+####################### nacl_bottom_asym_const_constant #######################
+chi_square / ndof =    27.825/25
+offset =   -0.214682 +- 0.0129966
+
+
+####################### nacl_top_asym_coscos_func #######################
+chi_square / ndof =    26.4344/33
+norm =   0.0369313 +- 0.0246228
+#omega (rad/#mu s) =   9.28632 +- 0.294656
+#phi =   0 +- 0
+offset =   0.0182286 +- 0.0165317
+
+
+####################### nacl_top_asym_const_constant #######################
+chi_square / ndof =    28.6754/35
+offset =   0.0206345 +- 0.0164511
+
+
+####################### pb_bottom_asym_coscos_func #######################
+chi_square / ndof =    51.8549/33
+norm =   0.0184394 +- 0.0151672
+#omega (rad/#mu s) =   3.97298 +- 0.272891
+#phi =   0 +- 0
+offset =   -0.179455 +- 0.0105701
+
+
+####################### pb_bottom_asym_const_constant #######################
+chi_square / ndof =    53.327/35
+offset =   -0.183259 +- 0.0100896
+
+
+####################### bottom_sub_asym_coscos_func #######################
+chi_square / ndof =    7.08226/23
+norm =   0.0195941 +- 0.0253863
+#omega (rad/#mu s) =   9.59433 +- 0.749073
+#phi =   0 +- 0
+offset =   0.0209603 +- 0.0172474
+
+
+####################### bottom_sub_asym_const_constant #######################
+chi_square / ndof =    7.67071/25
+offset =   0.0224622 +- 0.0171364
+
+
+####################### top_sub_asym_coscos_func #######################
+chi_square / ndof =    28.8033/33
+norm =   0.0109057 +- 0.361103
+#omega (rad/#mu s) =   8.59954 +- 0.793461
+#phi =   0 +- 0
+offset =   0.0569489 +- 0.0252375
+
+
+####################### top_sub_asym_const_constant #######################
+chi_square / ndof =    28.8892/35
+offset =   0.0575749 +- 0.0251423
+
+
+####################### tot_sub_asym_coscos_func #######################
+chi_square / ndof =    15.1363/31
+norm =   0.0185898 +- 0.0207517
+#omega (rad/#mu s) =   8.90885 +- 0.394198
+#phi =   0 +- 0
+offset =   -0.00991698 +- 0.0139008
+
+
+####################### tot_sub_asym_const_constant #######################
+chi_square / ndof =    15.9321/33
+offset =   -0.00851876 +- 0.0138108

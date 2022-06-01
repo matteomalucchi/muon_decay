@@ -19,9 +19,9 @@ void create_histo(){
     */
     list <string> fit_types = {
                         "_double_offset_fix",
+                        //"_single_offset",
                         //"_double_offset",
                         //"_double",
-                        //"_single_offset",
                         //"_single",
                     };
 
@@ -33,17 +33,15 @@ void create_histo(){
     TH1D histo_sum ;
     TH1D* histo_asym;
     TH1D histos_p;
-
-    double offset;
     
 
-    TFile *tree_file= new TFile("new_tree.root", "READ");
+    TFile *tree_file= new TFile("tree.root", "READ");
 
     for(list<string>::const_iterator type = fit_types.begin(); type != fit_types.end(); ++type){
         cout << "\n################## Processing : " << *type <<" ##################" << endl;
         int q=0;
         ofstream fit_file_exp("fit_params/fit_exp"+*type+".txt");
-        ofstream fit_file_exp_fe("fit_params/fit_exp_sys"+*type+".txt");
+        ofstream fit_file_exp_sys("fit_params/fit_exp_sys"+*type+".txt");
 
         TFile *histo_single_file= new TFile(&("histos_single/histo"+*type+".root")[0], "RECREATE");
         TFile *histo_combined_file= new TFile(&("histo_combined"+*type+".root")[0], "RECREATE");
@@ -77,8 +75,8 @@ void create_histo(){
                 const auto material = elem.first;
                 if (name->find(material) != string::npos){
                     histo = fill_histo(tree_file, *name, materials_dict_pos[material], *type);
-                    gROOT->SetBatch(kTRUE);
-                    //fit_exp(&histo, materials_dict_pos[material], *type, fit_file_exp, "Q L R I ", &offset);
+                    //gROOT->SetBatch(kTRUE);
+                    //fit_exp(&histo, materials_dict_pos[material], *type, fit_file_exp, "Q L R I +");
                     //save_plot(&histo, *type);
                     histos_material[material].push_back(histo);
                 }
@@ -91,7 +89,7 @@ void create_histo(){
             histo_combined_file->cd();
             if (histos_m.size()>0){
                 for (const auto & h_p : histos_pos){
-                    gROOT->SetBatch(kTRUE);
+                    //gROOT->SetBatch(kTRUE);
                     const auto position = h_p.first;
                     cout << "\n Processing : " << material << "_" << position << endl;
                     q=0;
@@ -107,8 +105,12 @@ void create_histo(){
                         }
                     }
                     histos_p.SetNameTitle(&(material+"_"+position+*type)[0], &(material+"_"+position+*type)[0]);
-                    fit_exp(&histos_p, materials_dict_pos[material], *type, fit_file_exp, " L R I", &offset);
+                    //if (/*material == "fe_top" || material == "al_bottom" ||*/ material.find("nacl") != string::npos /*|| material.find("nacl") != string::npos */){
+                        sys_unc(histos_p, fit_file_exp_sys, material, *type);
+                    //}
+                    fit_exp(&histos_p, materials_dict_pos[material], *type, fit_file_exp, "L R I ");
                     save_plot(&histos_p, *type);
+                    //gROOT->SetBatch(kTRUE);
                     histos_p.Copy(histos_pos[position]);
                     histos_pos[position].Sumw2();
                 }
@@ -119,47 +121,11 @@ void create_histo(){
                 histo_tot.Sumw2();
                 histo_tot.Add(&histos_pos["down"]);
                 histo_tot.SetNameTitle(&(material+"_tot"+*type)[0], &(material+"_tot"+*type)[0]);
-                if (material == "fe_top" /*|| material == "al_bottom" || material.find("mag") != string::npos || material.find("nacl") != string::npos */){
-                double min_l =10, max_l=-10, min_s =10, max_s=-10, tau_l, tau_s;
-                TF1* func;
-                for (double flu_inf=-0.2; flu_inf<= 0.21; flu_inf=flu_inf+0.1){
-                    for (double flu_sup=-4; flu_sup<= 0.1; flu_sup++){
-                        for (double flu_short=-0.05; flu_short<= 0.05; flu_short = flu_short+0.02){
-                            fit_exp(&histo_tot, materials_dict_pos[material], *type, fit_file_exp_fe, " Q L R I", &offset, flu_inf, flu_sup, flu_short);
-                            func = histo_tot.GetFunction("exp_tot");
-                            tau_l = func->GetParameter(3);
-                            tau_s = func->GetParameter(1);
+                //if (/*material == "fe_top" || material == "al_bottom" ||*/ material.find("nacl") != string::npos /*|| material.find("nacl") != string::npos */){
+                    sys_unc(histo_tot, fit_file_exp_sys, material, *type);
+                //}
 
-                            max_l = (tau_l>max_l) ? tau_l : max_l;
-                            min_l = (tau_l<min_l) ? tau_l : min_l;
-
-                            max_s = (tau_s>max_s) ? tau_s : max_s;
-                            min_s = (tau_s<min_s) ? tau_s : min_s;
-                            fit_file_exp_fe << flu_inf <<"  "<< flu_sup <<"  "<< flu_short << endl;
-                        }
-                    }
-                }
-                double span_l = max_l-min_l;
-                cout << "\n\n" << min_l << "\n\n" << endl;
-                cout << "\n\n" << max_l << "\n\n" << endl;
-                cout << "\n\n" << span_l << "\n\n" << endl;
-
-                
-                double span_s = max_s-min_s;
-                cout << "\n\n" << min_s << "\n\n" << endl;
-                cout << "\n\n" << max_s << "\n\n" << endl;
-                cout << "\n\n" << span_s << "\n\n" << endl;
-
-                fit_file_exp_fe << "\n\n long:\n" << min_l << "\n\n" << endl;
-                fit_file_exp_fe << "\n\n" << max_l << "\n\n" << endl;
-                fit_file_exp_fe << "\n\n" << span_l << "\n\n" << endl;                    
-
-                fit_file_exp_fe << "\n\n short: \n" << min_s << "\n\n" << endl;
-                fit_file_exp_fe << "\n\n" << max_s << "\n\n" << endl;
-                fit_file_exp_fe << "\n\n" << span_s << "\n\n" << endl;    
-                }
-
-                fit_exp(&histo_tot, materials_dict_pos[material], *type, fit_file_exp, "L R I", &offset);
+                fit_exp(&histo_tot, materials_dict_pos[material], *type, fit_file_exp, "L R I ");
                 save_plot(&histo_tot, *type);
 
             }
