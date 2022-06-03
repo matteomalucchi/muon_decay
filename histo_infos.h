@@ -65,7 +65,8 @@ double sup = 30;
 double n_bin = (sup-inf)/bin_width;
 double norm_pos = 200;
 double bin_asym = 0.1;
-double upper_asym = 4.;
+double upper_asym = 3.5;
+double a= 0.5, b = 30;
 
 // name of the material |
 // norm exp_short | tau exp_short | norm exp_long | tau exp_long | offset exp |
@@ -75,44 +76,44 @@ double upper_asym = 4.;
 map <string, vector<double>>  materials_dict_pos = {
     {"fe_top", {norm_pos/1.8, 0.201, norm_pos, 2.197, 10,
                     bin_width, 0.185, sup, 0.9,
-                    //0.05, 8.8, -2.7, -0.18, bin_asym*
-                    0.04, 9.2, 0, -0.15, bin_asym, upper_asym}},
+                    //0.05, 8.8, -2.7, -0.18, bin_asym
+                    0.04, 9.2, 0, -0.15, bin_asym, upper_asym, a, b}},
     /*{"al_bottom", {norm_pos/1.8, 0.88, norm_pos, 2.197, 10,
-                    bin_width, 0.3, sup, 2.5,
+                    bin_width, 0.4, sup, 2.5,
                     //0.05, 8.8, -2.7, -0.18, bin_asym
-                    0.04, 9.2, 0, -0.15, bin_asym, upper_asym}},*/
-    /*{"mag_bottom", {norm_pos/1.8, 0.201, 200, 2.2, 10,
-                    bin_width, 0.19, sup, 1,
+                    0.04, 9.2, 0, -0.15, bin_asym, upper_asym, a, b}},
+    {"mag_bottom", {norm_pos/1.8, 0.201, 200, 2.2, 10,
+                    bin_width, 0.18, sup, 1,
                     //0.05, 8.8, -2.7, -0.18, bin_asym
-                    0.04, 9.2, 0, -0.15, bin_asym, 3.}},
+                    0.04, 9.2, 0, -0.15, bin_asym, upper_asym, a, b}},
     {"mag_top", {norm_pos/1.8, 0.201, 200, 2.2, 10,
-                    bin_width, 0.19, sup, 1.,
+                    bin_width, 0.185, sup, 1.,
                     //0.05, 8.8, -2.7, -0.18, bin_asym
-                    0.04, 9.2, 0, -0.15, bin_asym, upper_asym}},
+                    0.04, 9.2, 0, -0.15, bin_asym, upper_asym, a, b}},
     {"mag", {norm_pos/1.8, 0.201, 200, 2.2, 10,
-                    bin_width, 0.19, sup, 1.1,
+                    bin_width, 0.185, sup, 1.1,
                     //0.05, 8.8, -2.7, -0.18, bin_asym
-                    0.04, 9.2, 0, -0.15, bin_asym, 3.8}}, */
-    /*{"nacl_top", {norm_pos/1.8, 0.7, 200, 2.2, 10,
-                    bin_width, 0.17, sup, 3,
+                    0.04, 9.2, 0, -0.15, bin_asym, upper_asym, a, b}}, 
+    {"nacl_top", {norm_pos/1.8, 0.7, 200, 2.2, 10,
+                    bin_width, 0.12, sup, 3,
                     //0.05, 8.8, -2.7, -0.18, bin_asym
-                    0.04, 9.2, 0, -0.15, bin_asym, upper_asym}},
+                    0.04, 9.2, 0, -0.15, bin_asym, upper_asym, a, b}},
     {"nacl_bottom", {100, 0.7, 200, 2.2, 10,
-                    bin_width, 0.17, sup, 3,
+                    bin_width, 0.25, sup, 3,
                     //0.05, 8.8, -2.7, -0.18, bin_asym
-                    0.04, 9.2, 0, -0.15, bin_asym, 3.}},
+                    0.04, 9.2, 0, -0.15, bin_asym, upper_asym, a, b}},
     {"nacl", {norm_pos/1.8, 0.7, 200, 2.2, 10,
                     bin_width, 0.17, sup, 3,
                     //0.05, 8.8, -2.7, -0.18, bin_asym
-                    0.04, 9.2, 0, -0.15, bin_asym, 3.8}},
+                    0.04, 9.2, 0, -0.15, bin_asym, upper_asym, a, b}},
     {"pb_bottom", {norm_pos/1.8, 0.08, 200, 2.2, 10,
-                    0.02, 0.08, sup, 3.5,
+                    0.08, 0.2, sup, 3.5,
                     //0.05, 8.8, -2.7, -0.18, bin_asym
-                    0.1, 4, 0, -0.17, bin_asym, upper_asym}},
-    {"ap", {norm_pos/1.8, 0.7, 200, 2.2, 10,
-                    0.02, 0.0, sup, 4,
+                    0.1, 4, 0, -0.17, bin_asym, upper_asym, a, b}},*/
+    /*{"ap", {norm_pos/1.8, 0.7, 200, 2.2, 10,
+                    0.02, 0.0, 5, 4,
                     //0.05, 8.8, -2.7, -0.18, bin_asym
-                    0.04, 9.2, 0, -0.15, bin_asym, upper_asym}},   */        
+                    0.04, 9.2, 0, -0.15, bin_asym, upper_asym}}, */
                              
 };
 

@@ -42,15 +42,12 @@ vector<vector<double>> read_time(string name, int numb){
                     }
                     else if (number-v4[v4.size()-1] == 0 && idx[idx.size()-2]==4 && idx[idx.size()-3]==4) {
                         w[ch_numb-3].push_back((number-v4[v4.size()-2])*pow(10, 6));
-                        /*if (number < v4[v4.size()-1]){
-                            cout << setprecision(12)<<  w[ch_numb-3][w[ch_numb-3].size()-1] <<endl;
-                            cout << setprecision(12)<< v1[v1.size()-2] <<"      "<< v1[v1.size()-1] <<"      " <<number<<"      " <<  endl;
-                        }*/
                     }
                 }
             }
 
         }
+        cout << w[0].size() <<endl;
         myfile.close(); //close the file object.
     }
     return w;

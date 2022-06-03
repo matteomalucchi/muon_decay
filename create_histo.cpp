@@ -75,13 +75,15 @@ void create_histo(){
                 const auto material = elem.first;
                 if (name->find(material) != string::npos){
                     histo = fill_histo(tree_file, *name, materials_dict_pos[material], *type);
-                    //gROOT->SetBatch(kTRUE);
-                    //fit_exp(&histo, materials_dict_pos[material], *type, fit_file_exp, "Q L R I +");
+                    gROOT->SetBatch(kTRUE);
+                    fit_exp(&histo, materials_dict_pos[material], *type, fit_file_exp, "Q L R I +");
+                    cout << histo.Integral(histo.FindFixBin(20), histo.FindFixBin(30)) <<endl;
                     //save_plot(&histo, *type);
                     histos_material[material].push_back(histo);
                 }
             }
         }
+        
         // histo up and down
         for (const auto & h_m : histos_material){
             const auto material = h_m.first;
@@ -104,11 +106,10 @@ void create_histo(){
                             q++;
                         }
                     }
-                    histos_p.SetNameTitle(&(material+"_"+position+*type)[0], &(material+"_"+position+*type)[0]);
-                    //if (/*material == "fe_top" || material == "al_bottom" ||*/ material.find("nacl") != string::npos /*|| material.find("nacl") != string::npos */){
-                        sys_unc(histos_p, fit_file_exp_sys, material, *type);
-                    //}
-                    fit_exp(&histos_p, materials_dict_pos[material], *type, fit_file_exp, "L R I ");
+                    histos_p.SetNameTitle(&(material+"_"+position/*+*type*/)[0], &(material+"_"+position/*+*type*/)[0]);
+                    //sys_unc(histos_p, fit_file_exp_sys, material, *type);
+                    
+                    fit_exp(&histos_p, materials_dict_pos[material], *type, fit_file_exp, "L R I");
                     save_plot(&histos_p, *type);
                     //gROOT->SetBatch(kTRUE);
                     histos_p.Copy(histos_pos[position]);
@@ -120,12 +121,11 @@ void create_histo(){
                 histos_pos["up"].Copy(histo_tot);
                 histo_tot.Sumw2();
                 histo_tot.Add(&histos_pos["down"]);
-                histo_tot.SetNameTitle(&(material+"_tot"+*type)[0], &(material+"_tot"+*type)[0]);
-                //if (/*material == "fe_top" || material == "al_bottom" ||*/ material.find("nacl") != string::npos /*|| material.find("nacl") != string::npos */){
-                    sys_unc(histo_tot, fit_file_exp_sys, material, *type);
-                //}
+                histo_tot.SetNameTitle(&(material+"_tot"/*+*type*/)[0], &(material+"_tot"/*+*type*/)[0]);
+                //sys_unc(histo_tot, fit_file_exp_sys, material, *type);
+                
 
-                fit_exp(&histo_tot, materials_dict_pos[material], *type, fit_file_exp, "L R I ");
+                fit_exp(&histo_tot, materials_dict_pos[material], *type, fit_file_exp, "L R I");
                 save_plot(&histo_tot, *type);
 
             }

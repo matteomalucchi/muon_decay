@@ -40,7 +40,6 @@ void create_asym(){
         {"fe_top", {}},
         {"pb_bottom", {}},
         {"al_bottom", {}},
-        //{"ap", {}},
         {"nacl_top", {}},
         {"mag_bottom", {}},
         {"mag_top", {}},
@@ -102,7 +101,7 @@ void create_asym(){
                     }
                 }
                 histos_p.SetNameTitle(&(material+"_"+position+type)[0], &(material+"_"+position+type)[0]);
-                fit_exp_asym(&histos_p, materials_dict_pos[material], type, " L R I", &offset);
+                fit_exp_asym(&histos_p, materials_dict_pos[material], type, "Q L R I", &offset);
                 cout << "\n\n" << offset<< "\n\n" ;
                 histos_pos[position] = histos_p;
                 histos_pos[position].Sumw2();
@@ -146,7 +145,8 @@ void create_asym(){
 
         }
     }
-
+    
+    // subctract background
     for (auto s_s : samples_sub){
         const auto pos = s_s.first;
         const auto sample = s_s.second;

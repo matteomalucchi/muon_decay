@@ -9,7 +9,7 @@ TH1D fill_histo(TFile* tree_file, string name, vector<double> ranges, string typ
     double t;
     TTree* tree = (TTree*) tree_file->Get(&(name)[0]);
     double n_bin =(ranges[7]-ranges[6])/ranges[5];
-    TH1D histo = TH1D(&(name+type)[0],&(name+type)[0], n_bin, ranges[6], ranges[7]);
+    TH1D histo = TH1D(&(name)[0],&(name)[0], n_bin, ranges[6], ranges[7]);
 
     Int_t nentries = (Int_t)tree->GetEntries();
     tree->SetBranchAddress("t",&t);
@@ -30,8 +30,8 @@ TH1D fill_histo(TFile* tree_file, string name, vector<double> ranges, string typ
 TH1D fill_histo_asym(TFile* tree_file, string name, vector<double> ranges, string type){
     double t;
     TTree* tree = (TTree*) tree_file->Get(&(name)[0]);
-    double n_bin =(ranges[7]-ranges[6])/ranges[13];
-    TH1D histo = TH1D(&(name+type)[0],&(name+type)[0], n_bin, ranges[6], ranges[7]);
+    double n_bin =(ranges[16]-ranges[15])/ranges[13];
+    TH1D histo = TH1D(&(name+type)[0],&(name+type)[0], n_bin, ranges[15], ranges[16]);
 
     Int_t nentries = (Int_t)tree->GetEntries();
     tree->SetBranchAddress("t",&t);
@@ -44,7 +44,7 @@ TH1D fill_histo_asym(TFile* tree_file, string name, vector<double> ranges, strin
         if (name.find(pos) != string::npos) histo.Scale(1/efficiencies[pos]);
     }
     char bin_w [7];
-    snprintf (bin_w, 7, "%.2f", (ranges[7]-ranges[6])/n_bin); 
+    snprintf (bin_w, 7, "%.2f", (ranges[16]-ranges[15])/n_bin); 
     string binw(bin_w);
     histo.GetXaxis()->SetTitle("t (#mu s)");
     histo.GetYaxis()->SetTitle(&("Asymmetry / " + binw + " (#mu s)")[0]);
@@ -56,18 +56,18 @@ void fit_exp(TH1D* histo, vector<double> infos, string type, ofstream & fit_file
     string name = histo->GetName();
     TF1 *exp_long, *exp_tot;
     if (type.find("offset") != string::npos) {
-        /*if (name.find("pb") != string::npos) {
+        if (name.find("pb") != string::npos) {
             exp_tot = new TF1("exp_tot", "[0]*exp(-x/[1])+[2]*exp(-x/[3])+[4]+[5]*exp(-x/[6])", infos[6]+flu_short, infos[7]+flu_sup);
             exp_tot->SetParNames("#Lambda_{Pb}", "#tau_{Pb} (#mu s)", "#Lambda_{+}", "#tau_{+} (#mu s)", "#Lambda_{0}", "#Lambda_{Al}", "#tau_{Al} (#mu s)");
             exp_tot->SetParameter(5, infos[0]);
             exp_tot->SetParameter(6, 0.88);
             exp_tot->SetParLimits(5, 0, infos[0]+pow(10, 4));
             exp_tot->SetParLimits(6, 0, 2);            
-        }*/
-        //else{
+        }
+        else{
             exp_tot = new TF1("exp_tot", "[0]*exp(-x/[1])+[2]*exp(-x/[3])+[4]", infos[6]+flu_short, infos[7]+flu_sup);
             exp_tot->SetParNames("#Lambda_{-}", "#tau_{-} (#mu s)", "#Lambda_{+}", "#tau_{+} (#mu s)", "#Lambda_{0}");
-        //}
+        }
         exp_tot->SetParameter(0, infos[0]);
         exp_tot->SetParameter(1, infos[1]);
         exp_tot->SetParameter(2, infos[2]);
@@ -84,6 +84,7 @@ void fit_exp(TH1D* histo, vector<double> infos, string type, ofstream & fit_file
             exp_long->SetParLimits(0, 0, infos[2]+pow(10, 4));
             exp_long->SetParLimits(1, infos[3]*1/3, infos[3]*3);
             exp_long->SetParLimits(2, 0, infos[4]*1000);
+            //exp_long->FixParameter(1, 2.197);
 
             exp_long->SetLineColor(kGreen);
             histo->Fit("exp_long", &(option + "")[0]);
@@ -92,7 +93,7 @@ void fit_exp(TH1D* histo, vector<double> infos, string type, ofstream & fit_file
             exp_tot->FixParameter(2, exp_long->GetParameter(0));
             //exp_tot->SetParameter(2, exp_long->GetParameter(0));
             exp_tot->FixParameter(3, exp_long->GetParameter(1)/*2.197*/);
-            //exp_tot->FixParameter(1, /*infos[1]*/0.29);
+            //exp_tot->FixParameter(1, infos[1]);
 
             if (type.find("fix") != string::npos) {
                 exp_tot->FixParameter(4, exp_long->GetParameter(2));
@@ -197,7 +198,7 @@ void fit_constant(TH1D* histo, string type, string option, ofstream & fit_file){
     string name = histo->GetName();
     cout << histo->GetXaxis()->GetXmin() << endl;
     TF1* constant = new TF1("const", "[0]", histo->GetXaxis()->GetXmin(), histo->GetXaxis()->GetXmax());
-    constant->SetParName(0, "offset");
+    constant->SetParName(0, "#delta");
     constant->SetParameter(0, -0.1);
     constant->SetParLimits(0, -2, 2);
     histo->Fit("const", &(option)[0]);
@@ -223,7 +224,7 @@ void sys_unc(TH1D histo, ofstream & fit_file, string material, string type){
     fit_file << histo.GetName() << endl;
     for (double flu_inf=-0.2; flu_inf<= 0.21; flu_inf=flu_inf+0.1){
         for (double flu_sup=-4; flu_sup<= 0.1; flu_sup++){
-            for (double flu_short=-0.03; flu_short<= 0.03; flu_short = flu_short+0.02){
+            for (double flu_short=-0.03; flu_short<= 0.031; flu_short = flu_short+0.02){
                 fit_exp(&histo, materials_dict_pos[material], type, fit_file, " Q L R I", flu_inf, flu_sup, flu_short, 0);
                 func = histo.GetFunction("exp_tot");
                 tau_l = func->GetParameter(3);
@@ -268,51 +269,56 @@ void save_plot(TH1D* histo, string type){
     c->Update();
     TPaveStats *st = (TPaveStats*)c->GetPrimitive("stats");
     
+    auto legend = new TLegend(0.35, 0.4, 0.9, 0.5);
+    //gStyle->SetLegendBorderSize(0);
+    legend->AddEntry(histo, &(name)[0],"l");
+
     //histo->SetMarkerStyle(kFullCircle);
     TF1* func;
     if (name.find("asym_cos") != string::npos) {
+        //histo->GetYaxis()->SetRangeUser(-0.55, 0.6);
         func = histo->GetFunction("cos_func");
+        func->SetLineColor(kRed);
         gStyle->SetOptStat("0");
         gStyle->SetOptFit(111);
-        st->SetX1NDC(0.7); //new x start position
-        st->SetX2NDC(0.9); //new x end position
-        st->SetY1NDC(0.7); //new x start position
+        st->SetX1NDC(0.1); //new x start position
+        st->SetX2NDC(0.45); //new x end position
+        st->SetY1NDC(0.75); //new x start position
         st->SetY2NDC(0.9); //new x end position
+        legend->AddEntry(func, "#rho cos(#omega t)+#psi","l");
     }
     else if (name.find("asym_const") != string::npos) {
+        //histo->GetYaxis()->SetRangeUser(-0.55, 0.6);
         func = histo->GetFunction("const");
+        func->SetLineColor(kGreen);
         gStyle->SetOptStat("0");
         gStyle->SetOptFit(111);
-        st->SetX1NDC(0.7); //new x start position
-        st->SetX2NDC(0.9); //new x end position
-        st->SetY1NDC(0.7); //new x start position
+        st->SetX1NDC(0.1); //new x start position
+        st->SetX2NDC(0.35); //new x end position
+        st->SetY1NDC(0.75); //new x start position
         st->SetY2NDC(0.9); //new x end position
+        legend->AddEntry(func, "#delta","l");
     }
     else  {
         func = histo->GetFunction("exp_tot");
         //gPad-> SetLogy();
         gStyle->SetOptStat("neou");
         gStyle->SetOptFit(112);
-        st->SetX1NDC(0.3); //new x start position
+        st->SetX1NDC(0.35); //new x start position
         st->SetX2NDC(0.9); //new x end position
-        st->SetY1NDC(0.3); //new x start position
+        st->SetY1NDC(0.5); //new x start position
         st->SetY2NDC(0.9); //new x end position
-    }
+        legend->AddEntry(func, "#Lambda_{+} exp(-t/#tau_{+})+#Lambda_{0}","l");
+    }//#Lambda_{-} exp(-t/#tau_{-}) + 
     
     func->Draw("SAME");
 
 
+    legend->Draw();
 
 
-    /*auto legend = new TLegend(0.4,0.7,0.6,0.85);
-    gStyle->SetLegendBorderSize(0);
-    //legend->SetHeader("The Legend Title","C"); // option "C" allows to center the header
-    legend->AddEntry(histo, &(name)[0],"l");
-    if (name.find("asym") != string::npos) legend->AddEntry(func, "cos","l");
-    else legend->AddEntry(func, "exp","l");
-    legend->Draw();*/
 
-    //c->BuildLegend(0.7,0.6,0.9,0.7);
+    //c->BuildLegend(0.4,0.3,0.9,0.4);
 
     c->SaveAs(&("images/"+type+"/"+name+".pdf")[0]);
     c->Write();
