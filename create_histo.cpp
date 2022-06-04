@@ -76,7 +76,7 @@ void create_histo(){
                 if (name->find(material) != string::npos){
                     histo = fill_histo(tree_file, *name, materials_dict_pos[material], *type);
                     gROOT->SetBatch(kTRUE);
-                    fit_exp(&histo, materials_dict_pos[material], *type, fit_file_exp, "Q L R I +");
+                    //fit_exp(&histo, materials_dict_pos[material], *type, fit_file_exp, "Q L R I ");
                     cout << histo.Integral(histo.FindFixBin(20), histo.FindFixBin(30)) <<endl;
                     //save_plot(&histo, *type);
                     histos_material[material].push_back(histo);

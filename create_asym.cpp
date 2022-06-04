@@ -56,17 +56,19 @@ void create_asym(){
         {"down", 0},
     };
     map <string, TH1D*> histos_sub = {
-        {"nacl_top_asym_cos", nullptr},
+        /*{"nacl_top_asym_cos", nullptr},
         {"mag_bottom_asym_cos", nullptr},
         {"mag_top_asym_cos", nullptr},
         {"nacl_bottom_asym_cos", nullptr},
         {"mag_asym_cos", nullptr},
-        {"nacl_asym_cos", nullptr},            
+        {"nacl_asym_cos", nullptr},      */      
+        {"pb_bottom_asym_cos", nullptr},
     };
     map <string, vector<string>> samples_sub = {
-        {"bottom", {"mag_bottom_asym_cos", "nacl_bottom_asym_cos"}},
+        /*{"bottom", {"mag_bottom_asym_cos", "nacl_bottom_asym_cos"}},
         {"top", {"mag_top_asym_cos", "nacl_top_asym_cos"}},
-        {"tot", {"mag_asym_cos", "nacl_asym_cos"}},
+        {"tot", {"mag_asym_cos", "nacl_asym_cos"}},*/
+        {"pb", {"pb_bottom_asym_cos", "nacl_top_asym_cos"}},
     };
     // histo single
     for(list<string>::const_iterator name = datasets.begin(); name != datasets.end(); ++name){

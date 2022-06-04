@@ -74,14 +74,14 @@ double a= 0.5, b = 30;
 // norm sin | omega sin | phase sin | offset sin | bin width asymmetry
 
 map <string, vector<double>>  materials_dict_pos = {
-    {"fe_top", {norm_pos/1.8, 0.201, norm_pos, 2.197, 10,
+    /*{"fe_top", {norm_pos/1.8, 0.201, norm_pos, 2.197, 10,
                     bin_width, 0.185, sup, 0.9,
                     //0.05, 8.8, -2.7, -0.18, bin_asym
                     0.04, 9.2, 0, -0.15, bin_asym, upper_asym, a, b}},
-    /*{"al_bottom", {norm_pos/1.8, 0.88, norm_pos, 2.197, 10,
+    {"al_bottom", {norm_pos/1.8, 0.88, norm_pos, 2.197, 10,
                     bin_width, 0.4, sup, 2.5,
                     //0.05, 8.8, -2.7, -0.18, bin_asym
-                    0.04, 9.2, 0, -0.15, bin_asym, upper_asym, a, b}},
+                    0.04, 9.2, 0, -0.15, bin_asym, upper_asym, a, b}},*/
     {"mag_bottom", {norm_pos/1.8, 0.201, 200, 2.2, 10,
                     bin_width, 0.18, sup, 1,
                     //0.05, 8.8, -2.7, -0.18, bin_asym
@@ -109,9 +109,9 @@ map <string, vector<double>>  materials_dict_pos = {
     {"pb_bottom", {norm_pos/1.8, 0.08, 200, 2.2, 10,
                     0.08, 0.2, sup, 3.5,
                     //0.05, 8.8, -2.7, -0.18, bin_asym
-                    0.1, 4, 0, -0.17, bin_asym, upper_asym, a, b}},*/
+                    0.1, 4, 0, -0.17, bin_asym, upper_asym, a, b}},
     /*{"ap", {norm_pos/1.8, 0.7, 200, 2.2, 10,
-                    0.02, 0.0, 5, 4,
+                    0.02, 0.0, 2, 4,
                     //0.05, 8.8, -2.7, -0.18, bin_asym
                     0.04, 9.2, 0, -0.15, bin_asym, upper_asym}}, */
                              

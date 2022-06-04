@@ -1,7 +1,7 @@
 void tau_long_plot(){
     double tau [] = {2.20,  2.1, 2.1, 2.12,1.8, 2.0,};
     double tau_stat [] = {0.03, 0.1, 0.1, 0.06, 0.1, 0.1,};
-    double tau_sys [] = {0.03, 0.08, 0.2, 0.05, 0.05, 0.1,};
+    double tau_sys [] = {0.01, 0.04, 0.1, 0.02, 0.02, 0.05,};
     const int dimension = sizeof(tau)/sizeof(tau[0]);
     double tau_sum [dimension] = {};
     double idx [dimension] ={};
@@ -31,7 +31,7 @@ void tau_long_plot(){
     auto legend = new TLegend(0.6,0.6,0.9,0.9);
 
     // Now we have to somehow depict the sum of errors
-    TGraphErrors* gr_sum = new TGraphErrors(dimension,tau, idx, tau_sum, idx_sum);
+    /*TGraphErrors* gr_sum = new TGraphErrors(dimension,tau, idx, tau_sum, idx_sum);
     gr_sum->SetLineColor(kViolet);
     gr_sum->SetLineWidth(1);
     gr_sum->SetFillColorAlpha(kWhite, 0);
@@ -40,7 +40,7 @@ void tau_long_plot(){
     gr_sum->GetXaxis()->SetTitle("#tau_{+} (#mu s)");
     gr_sum->GetYaxis()->SetTitle("Measuremets");
     gr_sum->GetXaxis()->SetLimits(1., 3.);
-    gr_sum->GetYaxis()->SetLimits(0., names.size()+0.5);
+    gr_sum->GetYaxis()->SetLimits(0., names.size()+0.5);*/
 
     // We first have to draw it only with the stat errors
     TGraphErrors* gr_stat = new TGraphErrors(dimension,tau, idx, tau_stat,idx_stat);
@@ -48,33 +48,31 @@ void tau_long_plot(){
     gr_stat->SetFillColorAlpha(kWhite, 1);
     gr_stat->SetLineWidth(1);
     gr_stat->SetMarkerStyle(20);
-    gr_stat->SetMarkerSize(1);
-    gr_stat->SetTitle("Combined Measurements of #tau_{+}");
+    gr_stat->SetTitle("Measurements of #tau_{+}");
     gr_stat->GetXaxis()->SetTitle("#tau_{+} (#mu s)");
     gr_stat->GetYaxis()->SetTitle("Measuremets");
     gr_stat->GetXaxis()->SetLimits(1., 3.);
     gr_stat->GetYaxis()->SetLimits(0., names.size()+0.5);
-    gr_stat->Draw(" 5 ");
+    gr_stat->Draw("A 5 ");
     
     // Now we have to somehow depict the sys errors
     TGraphErrors* gr_sys = new TGraphErrors(dimension,tau, idx, tau_sys,nullptr);
     gr_sys->SetLineColor(kRed);
-    gr_sys->SetMarkerSize(1);
     gr_sys->SetLineWidth(3);
 
     gr_sys->Draw("P");
 
     // draw points
     TGraphErrors* gr_point = new TGraphErrors(dimension,tau, idx, nullptr,nullptr);
-    gr_point->SetMarkerSize(1);
+    gr_point->SetMarkerSize(0.5);
     gr_point->SetMarkerStyle(20);
     gr_point->Draw("P");
 
     // PDG value
-    auto tau_pdg=new TLine(2.197, 0.8, 2.197, names.size()+0.2);
+    auto tau_pdg=new TLine(2.197, 0.5, 2.197, names.size()+0.5);
     tau_pdg->SetLineColor(kGreen);
     tau_pdg->SetLineStyle(9);
-    tau_pdg->SetLineWidth(2);
+    tau_pdg->SetLineWidth(1);
     tau_pdg->Draw();
 
 
@@ -86,7 +84,7 @@ void tau_long_plot(){
         title->SetFillColor(0);
         title->SetBorderSize(0);
         //title->SetTextFont(1);
-        title->SetTextSize(0.5);
+        title->SetTextSize(0.55);
         title->Draw();
 
         TArrow *ar1 = new TArrow(1.45, numb[0], 1.6, numb[0]);
@@ -94,6 +92,7 @@ void tau_long_plot(){
         ar1->Draw();
     }
 
+    /*
     // weighted average 
     float weights[dimension];
     float tau_ave=0;
@@ -115,57 +114,30 @@ void tau_long_plot(){
 
     auto meanline=new TLine(tau_ave, 0.8, tau_ave,names.size()+0.2);
     meanline->SetLineColor(7);
-    meanline->SetLineWidth(2);
+    meanline->SetLineWidth(1);
     meanline->SetLineStyle(9);
     meanline->Draw("SAME");
 
     auto meanlinesx=new TLine(tau_ave-tau_ave_err, 0.8, tau_ave-tau_ave_err, names.size()+0.2);
     meanlinesx->SetLineColor(7);
-    meanlinesx->SetLineWidth(2);
+    meanlinesx->SetLineWidth(1);
     meanlinesx->Draw("SAME");
 
     auto meanlinedx=new TLine(tau_ave+tau_ave_err, 0.8, tau_ave+tau_ave_err, names.size()+0.2);
     meanlinedx->SetLineColor(7);
-    meanlinedx->SetLineWidth(2);
-    meanlinedx->Draw("SAME");
+    meanlinedx->SetLineWidth(1);
+    meanlinedx->Draw("SAME");*/
 
 
     legend->AddEntry(gr_point, "Value","p");
-    legend->AddEntry(gr_stat, "Statistic uncertainty","f");
+    legend->AddEntry(gr_stat, "Statistical uncertainty","f");
     legend->AddEntry(gr_sys, "Systematic uncertainty","l");
-    legend->AddEntry(gr_sum, "Sum of uncertainties","f");
-    legend->AddEntry(meanline,"Weighted average","l");
-    legend->AddEntry(tau_pdg, "#tau_{#mu} PDG","l");
+    //legend->AddEntry(gr_sum, "Sum of uncertainties","f");
+    //legend->AddEntry(meanline,"Weighted average","l");
+    legend->AddEntry(tau_pdg, "#tau_{#mu} PDG = 2.197 #mu s","l");
 
     legend->Draw();
 
-    c->SaveAs("tau_long.pdf");
+    c->SaveAs("tau_long_tot.pdf");
 }
 
-
-
-    /*TGraphMultiErrors* gme = new TGraphMultiErrors("gme", "Combined Measurements of #tau_{+}", dimension, tau, idx, tau_stat, tau_stat, idx_stat, idx_stat);
-    gme->AddYError(dimension, tau_sys, tau_sys);
-    gme->AddYError(dimension, tau_sum, tau_sum);
-    gme->SetMarkerStyle(20);
-    gme->SetMarkerStyle(kBlack);
-    gme->SetLineColor(kRed);
-    gme->GetAttLine(0)->SetLineColor(kRed);
-    gme->GetAttLine(1)->SetLineColor(kBlue);
-    //gme->GetAttFill(1)->SetFillStyle(0);
- 
-    gme->GetXaxis()->SetTitle("#tau_{+} (#mu s)");
-    gme->GetYaxis()->SetTitle("Measuremets");
-    gme->GetXaxis()->SetLimits(1., 3.);
-    gme->GetYaxis()->SetLimits(0., names.size()+0.5);
-    gme->Draw("a p ; ; 5 s=0.5");
-    legend->AddEntry((TObject *)gme->GetAttLine(0), "stat","l");*/
-
-    /*auto gr_ave = new TGraphErrors(dimension, tau_ave_arr, idx, tau_ave_err_arr, nullptr);
-    gr_ave->SetFillColor(7);
-    gr_ave->SetLineColorAlpha(7, 0.35);
-    gr_ave->SetLineWidth(50);
-
-    gr_ave->SetFillStyle(3010);
-    gr_ave->Draw(" l");
-    legend->AddEntry(gr_ave, "Weighted average of the meausurements","f");*/

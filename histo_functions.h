@@ -73,7 +73,7 @@ void fit_exp(TH1D* histo, vector<double> infos, string type, ofstream & fit_file
         exp_tot->SetParameter(2, infos[2]);
 
         exp_tot->SetParLimits(0, 0, infos[1]+pow(10, 4));
-        exp_tot->SetParLimits(1, infos[1]*0, infos[1]*2);
+        exp_tot->SetParLimits(1, infos[1]*0, infos[1]*4);
         exp_tot->SetParLimits(2,  0, infos[1]+pow(10, 4));
 
         if (type.find("double") != string::npos){
@@ -93,7 +93,7 @@ void fit_exp(TH1D* histo, vector<double> infos, string type, ofstream & fit_file
             exp_tot->FixParameter(2, exp_long->GetParameter(0));
             //exp_tot->SetParameter(2, exp_long->GetParameter(0));
             exp_tot->FixParameter(3, exp_long->GetParameter(1)/*2.197*/);
-            //exp_tot->FixParameter(1, infos[1]);
+            exp_tot->FixParameter(1, infos[1]);
 
             if (type.find("fix") != string::npos) {
                 exp_tot->FixParameter(4, exp_long->GetParameter(2));
@@ -134,7 +134,9 @@ void fit_exp(TH1D* histo, vector<double> infos, string type, ofstream & fit_file
         }
     }
     
-    histo->Fit("exp_tot", &(option+ " ")[0]);
+    TFitResultPtr r = histo->Fit("exp_tot", &(option+ " S")[0]);
+    TMatrixD cov = r->GetCovarianceMatrix();
+    cov.Print();
 
     if (print == 1){
         fit_file << "\n\n####################### " << name << "#######################" << endl;
@@ -240,13 +242,13 @@ void sys_unc(TH1D histo, ofstream & fit_file, string material, string type){
             }
         }
     }
-    double span_l = max_l-min_l;
+    double span_l = (max_l-min_l)/2;
     cout << "\n\n" << min_l <<  endl;
     cout << max_l <<  endl;
     cout << span_l << "\n\n" << endl;
 
     
-    double span_s = max_s-min_s;
+    double span_s = (max_s-min_s)/2;
     cout << "\n\n" << min_s <<endl;
     cout << max_s << endl;
     cout <<span_s << "\n\n" << endl;
@@ -269,7 +271,7 @@ void save_plot(TH1D* histo, string type){
     c->Update();
     TPaveStats *st = (TPaveStats*)c->GetPrimitive("stats");
     
-    auto legend = new TLegend(0.35, 0.4, 0.9, 0.5);
+    auto legend = new TLegend(0.1, 0.8, 0.5, 0.9);
     //gStyle->SetLegendBorderSize(0);
     legend->AddEntry(histo, &(name)[0],"l");
 
@@ -282,9 +284,9 @@ void save_plot(TH1D* histo, string type){
         gStyle->SetOptStat("0");
         gStyle->SetOptFit(111);
         st->SetX1NDC(0.1); //new x start position
-        st->SetX2NDC(0.45); //new x end position
-        st->SetY1NDC(0.75); //new x start position
-        st->SetY2NDC(0.9); //new x end position
+        st->SetX2NDC(0.5); //new x end position
+        st->SetY1NDC(0.1); //new x start position
+        st->SetY2NDC(0.3); //new x end position
         legend->AddEntry(func, "#rho cos(#omega t)+#psi","l");
     }
     else if (name.find("asym_const") != string::npos) {
@@ -294,13 +296,13 @@ void save_plot(TH1D* histo, string type){
         gStyle->SetOptStat("0");
         gStyle->SetOptFit(111);
         st->SetX1NDC(0.1); //new x start position
-        st->SetX2NDC(0.35); //new x end position
-        st->SetY1NDC(0.75); //new x start position
-        st->SetY2NDC(0.9); //new x end position
+        st->SetX2NDC(0.5); //new x end position
+        st->SetY1NDC(0.1); //new x start position
+        st->SetY2NDC(0.3); //new x end position
         legend->AddEntry(func, "#delta","l");
     }
     else  {
-        func = histo->GetFunction("exp_tot");
+        //func = histo->GetFunction("exp_tot");
         //gPad-> SetLogy();
         gStyle->SetOptStat("neou");
         gStyle->SetOptFit(112);
@@ -308,10 +310,10 @@ void save_plot(TH1D* histo, string type){
         st->SetX2NDC(0.9); //new x end position
         st->SetY1NDC(0.5); //new x start position
         st->SetY2NDC(0.9); //new x end position
-        legend->AddEntry(func, "#Lambda_{+} exp(-t/#tau_{+})+#Lambda_{0}","l");
+        //legend->AddEntry(func, "#Lambda_{+} exp(-t/#tau_{+})+#Lambda_{0}","l");
     }//#Lambda_{-} exp(-t/#tau_{-}) + 
     
-    func->Draw("SAME");
+    //func->Draw("SAME");
 
 
     legend->Draw();
